@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DivineX</title>
+    <!-- Firebase SDK - with your config -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- CryptoJS for hashing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #111b21;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e9edef;
+        }
+
+        /* Auth Container */
+        #authContainer {
+            width: 100%;
+            max-width: 400px;
+            background-color: #202c33;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 17px 50px 0 rgba(0,0,0,0.5);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2f3b43;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            color: #8696a0;
+            font-weight: 500;
+        }
+
+        .auth-tab.active {
+            color: #00a884;
+            border-bottom: 2px solid #00a884;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #8696a0;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #2f3b43;
+            border: none;
+            border-radius: 5px;
+            color: #e9edef;
+            font-size: 15px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border: 1px solid #00a884;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #00a884;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #008f72;
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Main App Container */
+        #appContainer {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            max-width: 1800px;
+            background-color: #1f2c33;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 17px 50px 0 rgba(0,0,0,0.5);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 35%;
+            height: 100%;
+            background-color: #1f2c33;
+            border-right: 1px solid #2f3b43;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            height: 60px;
+            background-color: #202c33;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #2f3b43;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic i {
+            font-size: 24px;
+            color: #8696a0;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            color: #8696a0;
+        }
+
+        .header-icons i {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 8px 16px;
+            background-color: #1f2c33;
+        }
+
+        .search-box {
+            background-color: #202c33;
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box i {
+            color: #8696a0;
+            font-size: 14px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            color: #e9edef;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .search-box input::placeholder {
+            color: #8696a0;
+        }
+
+        /* Chats/Contacts List */
+        .chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #2f3b43;
+        }
+
+        .chat-item:hover {
+            background-color: #202c33;
+        }
+
+        .chat-item.active {
+            background-color: #2f3b43;
+        }
+
+        .chat-avatar {
+            width: 49px;
+            height: 49px;
+            border-radius: 50%;
+            background-color: #2f3b43;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chat-avatar i {
+            font-size: 30px;
+            color: #8696a0;
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .chat-lastmsg {
+            font-size: 13px;
+            color: #8696a0;
+        }
+
+        .chat-meta {
+            text-align: right;
+        }
+
+        .chat-time {
+            font-size: 12px;
+            color: #8696a0;
+        }
+
+        .admin-badge {
+            background-color: #00a884;
+            color: white;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+
+        .banned-badge {
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+
+        /* Group Chat Area */
+        .chat-area {
+            width: 65%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #1f2c33;
+        }
+
+        .chat-header {
+            height: 60px;
+            background-color: #202c33;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid #2f3b43;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-name {
+            font-weight: 600;
+        }
+
+        .chat-header-status {
+            font-size: 13px;
+            color: #8696a0;
+        }
+
+        .chat-header-icons {
+            display: flex;
+            gap: 20px;
+            color: #8696a0;
+        }
+
+        .chat-header-icons i {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Messages */
+        .messages-container {
+            flex: 1;
+            padding: 20px 30px;
+            overflow-y: auto;
+            background-color: #0b141a;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b141a" opacity="0.4"/></svg>');
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message.received {
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 65%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.sent .message-content {
+            background-color: #005c4b;
+            color: #e9edef;
+        }
+
+        .message.received .message-content {
+            background-color: #202c33;
+            color: #e9edef;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #8696a0;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .message.sent .message-time {
+            color: #a1d8c8;
+        }
+
+        .message-sender {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: #00a884;
+        }
+
+        /* Message Media */
+        .message-media {
+            max-width: 300px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .message-media img {
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .message-media video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .message-file {
+            background-color: #2f3b43;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message-file i {
+            font-size: 30px;
+            color: #8696a0;
+        }
+
+        .message-file-info {
+            flex: 1;
+        }
+
+        .message-file-name {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .message-file-size {
+            font-size: 12px;
+            color: #8696a0;
+        }
+
+        .message-file-download {
+            color: #00a884;
+            cursor: pointer;
+        }
+
+        /* Admin warning message */
+        .admin-warning {
+            background-color: #ff4d4d20;
+            border-left: 3px solid #ff4d4d;
+            padding: 8px 12px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+
+        /* Input Area */
+        .input-area {
+            background-color: #202c33;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-area i {
+            color: #8696a0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .input-area input {
+            flex: 1;
+            background-color: #2f3b43;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            color: #e9edef;
+            font-size: 15px;
+        }
+
+        .input-area input:focus {
+            outline: none;
+        }
+
+        .input-area input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #202c33;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #2f3b43;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #e9edef;
+        }
+
+        .modal-header i {
+            color: #8696a0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .user-list-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .user-list-item:hover {
+            background-color: #2f3b43;
+        }
+
+        .user-list-item.selected {
+            background-color: #00a88420;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #2f3b43;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #8696a0;
+        }
+
+        .radio-group {
+            margin: 10px 0;
+        }
+
+        .radio-group label {
+            display: block;
+            margin: 10px 0;
+            color: #e9edef;
+        }
+
+        /* File preview */
+        .file-preview {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #2f3b43;
+            border-radius: 5px;
+        }
+
+        .file-preview img {
+            max-width: 100%;
+            max-height: 200px;
+        }
+
+        .file-preview video {
+            max-width: 100%;
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Container -->
+    <div id="authContainer">
+        <div class="auth-tabs">
+            <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+            <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form active">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="loginUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter password">
+            </div>
+            <button class="btn" onclick="login()">Login</button>
+            <div id="loginError" class="error-message"></div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="auth-form">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="registerUsername" placeholder="Choose username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="registerPassword" placeholder="Choose password">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="registerConfirmPassword" placeholder="Confirm password">
+            </div>
+            <button class="btn" onclick="register()">Register</button>
+            <div id="registerError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="appContainer">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-pic" onclick="showProfileModal()">
+                    <i class="fas fa-user" id="profilePicIcon"></i>
+                    <img id="profilePicImg" src="" style="display: none;">
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-edit" onclick="showCreateGroupModal()" title="Create Group"></i>
+                    <i class="fas fa-users" onclick="showGroupsList()" title="Groups"></i>
+                    <i class="fas fa-ban" onclick="showBannedUsers()" title="Banned Users"></i>
+                    <i class="fas fa-sign-out-alt" onclick="logout()" title="Logout"></i>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search or start new chat" id="searchInput" onkeyup="searchUsers()">
+                </div>
+            </div>
+
+            <!-- Chats/Contacts List -->
+            <div class="chats-list" id="chatsList"></div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea" style="display: none;">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar" id="currentChatAvatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="chat-header-name" id="currentChatName"></div>
+                        <div class="chat-header-status" id="currentChatStatus"></div>
+                    </div>
+                </div>
+                <div class="chat-header-icons">
+                    <i class="fas fa-user-plus" onclick="showAddParticipantModal()" title="Add Participant" id="addParticipantBtn" style="display: none;"></i>
+                    <i class="fas fa-shield-alt" onclick="showGroupSettings()" title="Group Settings" id="groupSettingsBtn" style="display: none;"></i>
+                    <i class="fas fa-info-circle" onclick="showGroupInfo()" title="Group Info"></i>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="messages-container" id="messagesContainer"></div>
+
+            <!-- Input Area -->
+            <div class="input-area" id="inputArea">
+                <i class="fas fa-paperclip" onclick="showFileUploadMenu()"></i>
+                <i class="fas fa-image" onclick="uploadImage()"></i>
+                <input type="text" placeholder="Type a message" id="messageInput" onkeypress="handleKeyPress(event)">
+                <i class="fas fa-paper-plane" onclick="sendMessage()"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Profile</h3>
+                <i class="fas fa-times" onclick="closeModal('profileModal')"></i>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Profile Photo</label>
+                    <div class="profile-pic" style="width: 100px; height: 100px; margin: 0 auto 20px;">
+                        <i class="fas fa-user" id="modalProfileIcon"></i>
+                        <img id="modalProfileImg" src="" style="display: none;">
+                    </div>
+                    <input type="file" id="profilePhotoInput" accept="image/*" onchange="uploadProfilePhoto()">
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="profileUsername" readonly>
+                </div>
+                <div class="form-group">
+                    <label>User ID</label>
+                    <input type="text" id="profileUserId" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <input type="text" id="profileRole" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Group Modal -->
+    <div class="modal" id="createGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Group</h3>
+                <i class="fas fa-times" onclick="closeModal('createGroupModal')"></i>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Group Name</label>
+                    <input type="text" id="groupName" placeholder="Enter group name">
+                </div>
+                <div class="form-group">
+                    <label>Add Participants</label>
+                    <div id="usersList" style="max-height: 200px; overflow-y: auto;"></div>
+                </div>
+                <button class="btn" onclick="createGroup()">Create Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Settings Modal -->
+    <div class="modal" id="groupSettingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Group Settings</h3>
+                <i class="fas fa-times" onclick="closeModal('groupSettingsModal')"></i>
+            </div>
+            <div class="modal-body">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="groupMode" value="everyone" onchange="updateGroupSettings()"> Everyone can send messages
+                    </label>
+                    <label>
+                        <input type="radio" name="groupMode" value="admins" onchange="updateGroupSettings()"> Only admins can send messages
+                    </label>
+                </div>
+                <h4>Participants</h4>
+                <div id="participantsList" style="max-height: 200px; overflow-y: auto;"></div>
+                <h4>Make Admin</h4>
+                <div id="makeAdminList" style="max-height: 200px; overflow-y: auto;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Participant Modal -->
+    <div class="modal" id="addParticipantModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Participant</h3>
+                <i class="fas fa-times" onclick="closeModal('addParticipantModal')"></i>
+            </div>
+            <div class="modal-body">
+                <div id="availableUsersList" style="max-height: 300px; overflow-y: auto;"></div>
+                <button class="btn" onclick="addParticipants()">Add Selected</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banned Users Modal -->
+    <div class="modal" id="bannedUsersModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Banned Users</h3>
+                <i class="fas fa-times" onclick="closeModal('bannedUsersModal')"></i>
+            </div>
+            <div class="modal-body">
+                <div id="bannedUsersList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Modal -->
+    <div class="modal" id="fileUploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send File</h3>
+                <i class="fas fa-times" onclick="closeModal('fileUploadModal')"></i>
+            </div>
+            <div class="modal-body">
+                <input type="file" id="fileInput" onchange="previewFile()">
+                <div id="filePreview" class="file-preview"></div>
+                <button class="btn" onclick="uploadFile()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5a7AmwYgCJtan_c2BVDZVU9z7s29vwvQ",
+            authDomain: "divinex-edc56.firebaseapp.com",
+            databaseURL: "https://divinex-edc56-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "divinex-edc56",
+            storageBucket: "divinex-edc56.firebasestorage.app",
+            messagingSenderId: "62193852994",
+            appId: "1:62193852994:web:e582135f2815a1aa1a43db",
+            measurementId: "G-0EM4YVFNE4"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // Global variables
+        let currentUser = null;
+        let currentChat = null;
+        let selectedUsers = new Set();
+        let selectedFile = null;
+        let currentGroupSettings = null;
+
+        // Hash password function
+        function hashPassword(password) {
+            return CryptoJS.SHA256(password).toString();
+        }
+
+        // Auth functions
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'login') {
+                document.querySelector('.auth-tab').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+
+        async function register() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (!username || !password) {
+                document.getElementById('registerError').textContent = 'All fields required';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('registerError').textContent = 'Passwords do not match';
+                return;
+            }
+
+            try {
+                // Check if username exists
+                const snapshot = await database.ref('usernames/' + username).once('value');
+                if (snapshot.exists()) {
+                    document.getElementById('registerError').textContent = 'Username already taken';
+                    return;
+                }
+
+                // Create user with email (using username as email prefix)
+                const email = username + '@divinex.local';
+                const credential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = credential.user;
+                const uid = user.uid;
+                
+                // Hash password for storage
+                const hashedPassword = hashPassword(password);
+
+                // Save user data with UID
+                await database.ref('users/' + uid).set({
+                    uid: uid,
+                    username: username,
+                    password: hashedPassword,
+                    photoURL: null,
+                    role: 'user',
+                    banned: false,
+                    createdAt: new Date().toISOString(),
+                    warnings: []
+                });
+
+                // Save username mapping
+                await database.ref('usernames/' + username).set(uid);
+                
+                // Create admin if not exists
+                await createAdminIfNotExists();
+
+            } catch (error) {
+                document.getElementById('registerError').textContent = error.message;
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                document.getElementById('loginError').textContent = 'All fields required';
+                return;
+            }
+
+            try {
+                // Get UID from username
+                const uidSnapshot = await database.ref('usernames/' + username).once('value');
+                const uid = uidSnapshot.val();
+
+                if (!uid) {
+                    document.getElementById('loginError').textContent = 'User not found';
+                    return;
+                }
+
+                // Get user data
+                const userSnapshot = await database.ref('users/' + uid).once('value');
+                const userData = userSnapshot.val();
+
+                if (!userData) {
+                    document.getElementById('loginError').textContent = 'User not found';
+                    return;
+                }
+
+                // Check if banned
+                if (userData.banned) {
+                    document.getElementById('loginError').textContent = 'You are banned from DivineX';
+                    return;
+                }
+
+                // Verify password
+                const hashedInput = hashPassword(password);
+                if (hashedInput !== userData.password) {
+                    document.getElementById('loginError').textContent = 'Invalid password';
+                    return;
+                }
+
+                // Sign in to Firebase Auth
+                const email = username + '@divinex.local';
+                await auth.signInWithEmailAndPassword(email, password);
+
+            } catch (error) {
+                document.getElementById('loginError').textContent = error.message;
+            }
+        }
+
+        async function createAdminIfNotExists() {
+            const adminUsername = 'DivineX_Admin';
+            const adminPassword = 'UnholyDaddyDivineX';
+            
+            // Check if admin exists
+            const adminSnapshot = await database.ref('usernames/' + adminUsername).once('value');
+            if (!adminSnapshot.exists()) {
+                try {
+                    // Create admin in Firebase Auth
+                    const adminEmail = adminUsername + '@divinex.local';
+                    const credential = await auth.createUserWithEmailAndPassword(adminEmail, adminPassword);
+                    const adminUid = credential.user.uid;
+                    
+                    // Hash admin password
+                    const hashedAdminPassword = hashPassword(adminPassword);
+                    
+                    // Save admin data
+                    await database.ref('users/' + adminUid).set({
+                        uid: adminUid,
+                        username: adminUsername,
+                        password: hashedAdminPassword,
+                        photoURL: null,
+                        role: 'admin',
+                        banned: false,
+                        createdAt: new Date().toISOString(),
+                        warnings: []
+                    });
+                    
+                    // Save admin username mapping
+                    await database.ref('usernames/' + adminUsername).set(adminUid);
+                    
+                    console.log('Admin account created');
+                } catch (error) {
+                    console.error('Admin creation error:', error);
+                }
+            }
+        }
+
+        // Auth state observer
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // Get user data from database
+                const snapshot = await database.ref('users/' + user.uid).once('value');
+                currentUser = snapshot.val();
+                
+                if (currentUser && !currentUser.banned) {
+                    document.getElementById('authContainer').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'flex';
+                    loadChats();
+                    setupRealtimeListeners();
+                } else {
+                    auth.signOut();
+                }
+            } else {
+                document.getElementById('authContainer').style.display = 'block';
+                document.getElementById('appContainer').style.display = 'none';
+                currentUser = null;
+            }
+        });
+
+        // Load chats (users and groups)
+        function loadChats() {
+            const chatsList = document.getElementById('chatsList');
+            chatsList.innerHTML = '<div style="padding: 20px; text-align: center;">Loading...</div>';
+            
+            // Load users
+            database.ref('users').on('value', (snapshot) => {
+                const users = snapshot.val();
+                let html = '';
+                
+                if (users) {
+                    Object.values(users).forEach(user => {
+                        if (user.uid !== currentUser.uid && !user.banned) {
+                            html += `
+                                <div class="chat-item" onclick="openPrivateChat('${user.uid}')">
+                                    <div class="chat-avatar">
+                                        ${user.photoURL ? 
+                                            `<img src="${user.photoURL}">` : 
+                                            `<i class="fas fa-user"></i>`
+                                        }
+                                    </div>
+                                    <div class="chat-info">
+                                        <div class="chat-name">
+                                            ${user.username}
+                                            ${user.role === 'admin' ? '<span class="admin-badge">Admin</span>' : ''}
+                                        </div>
+                                        <div class="chat-lastmsg">Click to chat</div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                
+                // Load groups
+                database.ref('groups').once('value', (groupSnapshot) => {
+                    const groups = groupSnapshot.val();
+                    if (groups) {
+                        Object.values(groups).forEach(group => {
+                            // Check if user is member
+                            if (group.members && group.members[currentUser.uid]) {
+                                html += `
+                                    <div class="chat-item" onclick="openGroupChat('${group.id}')">
+                                        <div class="chat-avatar">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="chat-info">
+                                            <div class="chat-name">${group.name}</div>
+                                            <div class="chat-lastmsg">${group.messages ? 'Has messages' : 'New group'}</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    chatsList.innerHTML = html || '<div style="padding: 20px; text-align: center;">No chats available</div>';
+                });
+            });
+        }
+
+        // Open private chat
+        function openPrivateChat(userId) {
+            database.ref('users/' + userId).once('value', (snapshot) => {
+                const user = snapshot.val();
+                currentChat = {
+                    type: 'private',
+                    id: userId,
+                    name: user.username,
+                    avatar: user.photoURL,
+                    userId: userId
+                };
+                
+                document.getElementById('chatArea').style.display = 'flex';
+                document.getElementById('currentChatName').textContent = user.username;
+                document.getElementById('currentChatStatus').textContent = 'Online';
+                document.getElementById('addParticipantBtn').style.display = 'none';
+                document.getElementById('groupSettingsBtn').style.display = 'none';
+                
+                // Update avatar
+                const avatar = document.getElementById('currentChatAvatar');
+                if (user.photoURL) {
+                    avatar.innerHTML = `<img src="${user.photoURL}">`;
+                } else {
+                    avatar.innerHTML = '<i class="fas fa-user"></i>';
+                }
+                
+                loadMessages(userId, 'private');
+            });
+        }
+
+        // Open group chat
+        function openGroupChat(groupId) {
+            database.ref('groups/' + groupId).once('value', (snapshot) => {
+                const group = snapshot.val();
+                currentChat = {
+                    type: 'group',
+                    id: groupId,
+                    name: group.name,
+                    group: group
+                };
+                
+                document.getElementById('chatArea').style.display = 'flex';
+                document.getElementById('currentChatName').textContent = group.name;
+                
+                // Check if user is admin
+                const isAdmin = group.admins && group.admins[currentUser.uid];
+                document.getElementById('addParticipantBtn').style.display = isAdmin ? 'block' : 'none';
+                document.getElementById('groupSettingsBtn').style.display = isAdmin ? 'block' : 'none';
+                
+                // Update status
+                const memberCount = group.members ? Object.keys(group.members).length : 0;
+                document.getElementById('currentChatStatus').textContent = `${memberCount} members`;
+                
+                // Update avatar
+                document.getElementById('currentChatAvatar').innerHTML = '<i class="fas fa-users"></i>';
+                
+                loadMessages(groupId, 'group');
+                
+                // Check if user can send messages
+                checkGroupPermissions(group);
+            });
+        }
+
+        // Check group permissions
+        function checkGroupPermissions(group) {
+            const messageInput = document.getElementById('messageInput');
+            
+            if (group.settings && group.settings.onlyAdmins) {
+                const isAdmin = group.admins && group.admins[currentUser.uid];
+                messageInput.disabled = !isAdmin;
+                messageInput.placeholder = isAdmin ? 'Type a message' : 'Only admins can send messages';
+            } else {
+                messageInput.disabled = false;
+                messageInput.placeholder = 'Type a message';
+            }
+        }
+
+        // Load messages
+        function loadMessages(chatId, type) {
+            const messagesRef = type === 'private' 
+                ? database.ref('privateMessages/' + getPrivateChatId(currentUser.uid, chatId))
+                : database.ref('groupMessages/' + chatId);
+            
+            messagesRef.on('value', (snapshot) => {
+                const messages = snapshot.val();
+                displayMessages(messages);
+            });
+        }
+
+        // Display messages
+        function displayMessages(messages) {
+            const container = document.getElementById('messagesContainer');
+            if (!messages) {
+                container.innerHTML = '<div style="text-align: center; margin-top: 50px;">No messages yet</div>';
+                return;
+            }
+            
+            let html = '';
+            Object.values(messages).forEach(msg => {
+                const isSent = msg.sender === currentUser.uid;
+                const senderName = msg.senderName || 'Unknown';
+                
+                html += `
+                    <div class="message ${isSent ? 'sent' : 'received'}">
+                        <div class="message-content">
+                            ${!isSent ? `<div class="message-sender">${senderName}</div>` : ''}
+                            ${msg.text ? msg.text : ''}
+                            ${msg.media ? renderMedia(msg.media) : ''}
+                            ${msg.file ? renderFile(msg.file) : ''}
+                            <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Render media
+        function renderMedia(media) {
+            if (media.type.startsWith('image/')) {
+                return `<div class="message-media"><img src="${media.url}" onclick="window.open('${media.url}')"></div>`;
+            } else if (media.type.startsWith('video/')) {
+                return `<div class="message-media"><video controls src="${media.url}"></video></div>`;
+            }
+            return '';
+        }
+
+        // Render file
+        function renderFile(file) {
+            return `
+                <div class="message-file">
+                    <i class="fas fa-file"></i>
+                    <div class="message-file-info">
+                        <div class="message-file-name">${file.name}</div>
+                        <div class="message-file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <i class="fas fa-download message-file-download" onclick="window.open('${file.url}')"></i>
+                </div>
+            `;
+        }
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            
+            if (!text || !currentChat) return;
+            
+            const message = {
+                sender: currentUser.uid,
+                senderName: currentUser.username,
+                text: text,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (currentChat.type === 'private') {
+                const chatId = getPrivateChatId(currentUser.uid, currentChat.userId);
+                await database.ref('privateMessages/' + chatId).push(message);
+            } else {
+                // Check if can send in group
+                if (currentChat.group.settings && currentChat.group.settings.onlyAdmins) {
+                    const isAdmin = currentChat.group.admins && currentChat.group.admins[currentUser.uid];
+                    if (!isAdmin) return;
+                }
+                
+                await database.ref('groupMessages/' + currentChat.id).push(message);
+            }
+            
+            input.value = '';
+        }
+
+        // Helper functions
+        function getPrivateChatId(uid1, uid2) {
+            return [uid1, uid2].sort().join('_');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        // Group functions
+        function showCreateGroupModal() {
+            document.getElementById('createGroupModal').classList.add('active');
+            loadUsersForGroup();
+        }
+
+        function loadUsersForGroup() {
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val();
+                let html = '';
+                
+                Object.values(users).forEach(user => {
+                    if (user.uid !== currentUser.uid && !user.banned) {
+                        html += `
+                            <div class="user-list-item" onclick="toggleUserSelection('${user.uid}')">
+                                <div class="user-avatar">
+                                    ${user.photoURL ? 
+                                        `<img src="${user.photoURL}">` : 
+                                        `<i class="fas fa-user"></i>`
+                                    }
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">${user.username}</div>
+                                </div>
+                                <i class="fas fa-check" id="check-${user.uid}" style="color: #00a884; display: none;"></i>
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('usersList').innerHTML = html;
+            });
+        }
+
+        function toggleUserSelection(userId) {
+            if (selectedUsers.has(userId)) {
+                selectedUsers.delete(userId);
+                document.getElementById(`check-${userId}`).style.display = 'none';
+            } else {
+                selectedUsers.add(userId);
+                document.getElementById(`check-${userId}`).style.display = 'block';
+            }
+        }
+
+        async function createGroup() {
+            const groupName = document.getElementById('groupName').value.trim();
+            
+            if (!groupName) {
+                alert('Please enter group name');
+                return;
+            }
+            
+            if (selectedUsers.size === 0) {
+                alert('Please select at least one participant');
+                return;
+            }
+            
+            const groupId = database.ref().child('groups').push().key;
+            
+            // Create members object
+            const members = {};
+            members[currentUser.uid] = true;
+            selectedUsers.forEach(uid => members[uid] = true);
+            
+            // Create admins object (creator is admin)
+            const admins = {};
+            admins[currentUser.uid] = true;
+            
+            const group = {
+                id: groupId,
+                name: groupName,
+                createdBy: currentUser.uid,
+                createdAt: new Date().toISOString(),
+                members: members,
+                admins: admins,
+                settings: {
+                    onlyAdmins: false
+                }
+            };
+            
+            await database.ref('groups/' + groupId).set(group);
+            
+            closeModal('createGroupModal');
+            selectedUsers.clear();
+            openGroupChat(groupId);
+        }
+
+        // Admin functions
+        async function warnUser(userId) {
+            if (currentUser.role !== 'admin') return;
+            
+            const warning = {
+                by: currentUser.uid,
+                timestamp: new Date().toISOString(),
+                reason: 'Admin warning'
+            };
+            
+            await database.ref('users/' + userId + '/warnings').push(warning);
+            alert('User warned successfully');
+        }
+
+        async function banUser(userId) {
+            if (currentUser.role !== 'admin') return;
+            
+            if (confirm('Are you sure you want to ban this user?')) {
+                await database.ref('users/' + userId).update({
+                    banned: true
+                });
+                alert('User banned successfully');
+            }
+        }
+
+        async function unbanUser(userId) {
+            if (currentUser.role !== 'admin') return;
+            
+            await database.ref('users/' + userId).update({
+                banned: false
+            });
+            showBannedUsers();
+        }
+
+        // Profile functions
+        function showProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+            document.getElementById('profileUsername').value = currentUser.username;
+            document.getElementById('profileUserId').value = currentUser.uid;
+            document.getElementById('profileRole').value = currentUser.role;
+            
+            if (currentUser.photoURL) {
+                document.getElementById('modalProfileIcon').style.display = 'none';
+                document.getElementById('modalProfileImg').src = currentUser.photoURL;
+                document.getElementById('modalProfileImg').style.display = 'block';
+            }
+        }
+
+        async function uploadProfilePhoto() {
+            const file = document.getElementById('profilePhotoInput').files[0];
+            if (!file) return;
+            
+            try {
+                const storageRef = storage.ref('profile_photos/' + currentUser.uid);
+                await storageRef.put(file);
+                const photoURL = await storageRef.getDownloadURL();
+                
+                await database.ref('users/' + currentUser.uid).update({
+                    photoURL: photoURL
+                });
+                
+                currentUser.photoURL = photoURL;
+                showProfileModal();
+                
+            } catch (error) {
+                alert('Error uploading photo: ' + error.message);
+            }
+        }
+
+        // File upload
+        function showFileUploadMenu() {
+            document.getElementById('fileUploadModal').classList.add('active');
+        }
+
+        function previewFile() {
+            const file = document.getElementById('fileInput').files[0];
+            if (!file) return;
+            
+            selectedFile = file;
+            const preview = document.getElementById('filePreview');
+            
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.innerHTML = `<img src="${e.target.result}">`;
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type.startsWith('video/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.innerHTML = `<video controls src="${e.target.result}"></video>`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = `
+                    <i class="fas fa-file" style="font-size: 40px;"></i>
+                    <div>${file.name} (${formatFileSize(file.size)})</div>
+                `;
+            }
+        }
+
+        async function uploadFile() {
+            if (!selectedFile || !currentChat) return;
+            
+            try {
+                const fileRef = storage.ref('chat_files/' + Date.now() + '_' + selectedFile.name);
+                await fileRef.put(selectedFile);
+                const fileURL = await fileRef.getDownloadURL();
+                
+                const message = {
+                    sender: currentUser.uid,
+                    senderName: currentUser.username,
+                    timestamp: new Date().toISOString()
+                };
+                
+                if (selectedFile.type.startsWith('image/') || selectedFile.type.startsWith('video/')) {
+                    message.media = {
+                        url: fileURL,
+                        type: selectedFile.type
+                    };
+                } else {
+                    message.file = {
+                        url: fileURL,
+                        name: selectedFile.name,
+                        size: selectedFile.size,
+                        type: selectedFile.type
+                    };
+                }
+                
+                if (currentChat.type === 'private') {
+                    const chatId = getPrivateChatId(currentUser.uid, currentChat.userId);
+                    await database.ref('privateMessages/' + chatId).push(message);
+                } else {
+                    await database.ref('groupMessages/' + currentChat.id).push(message);
+                }
+                
+                closeModal('fileUploadModal');
+                selectedFile = null;
+                document.getElementById('filePreview').innerHTML = '';
+                
+            } catch (error) {
+                alert('Error uploading file: ' + error.message);
+            }
+        }
+
+        // Group settings
+        function showGroupSettings() {
+            if (!currentChat || currentChat.type !== 'group') return;
+            
+            document.getElementById('groupSettingsModal').classList.add('active');
+            
+            // Set radio button
+            const radio = document.querySelector(`input[value="${currentChat.group.settings.onlyAdmins ? 'admins' : 'everyone'}"]`);
+            if (radio) radio.checked = true;
+            
+            loadParticipants();
+            loadMakeAdminList();
+        }
+
+        function loadParticipants() {
+            const group = currentChat.group;
+            let html = '';
+            
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val();
+                
+                Object.keys(group.members).forEach(uid => {
+                    const user = users[uid];
+                    if (user) {
+                        const isAdmin = group.admins && group.admins[uid];
+                        html += `
+                            <div class="user-list-item">
+                                <div class="user-avatar">
+                                    ${user.photoURL ? 
+                                        `<img src="${user.photoURL}">` : 
+                                        `<i class="fas fa-user"></i>`
+                                    }
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">
+                                        ${user.username}
+                                        ${isAdmin ? '<span class="admin-badge">Admin</span>' : ''}
+                                    </div>
+                                </div>
+                                ${currentUser.role === 'admin' || (group.admins && group.admins[currentUser.uid]) ?
+                                    `<i class="fas fa-ban" onclick="banFromGroup('${uid}')" style="color: #ff4d4d; cursor: pointer;"></i>` : ''
+                                }
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('participantsList').innerHTML = html;
+            });
+        }
+
+        function loadMakeAdminList() {
+            const group = currentChat.group;
+            let html = '';
+            
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val();
+                
+                Object.keys(group.members).forEach(uid => {
+                    const user = users[uid];
+                    if (user && !group.admins[uid]) {
+                        html += `
+                            <div class="user-list-item" onclick="makeAdmin('${uid}')">
+                                <div class="user-avatar">
+                                    ${user.photoURL ? 
+                                        `<img src="${user.photoURL}">` : 
+                                        `<i class="fas fa-user"></i>`
+                                    }
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">${user.username}</div>
+                                </div>
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('makeAdminList').innerHTML = html || '<div>No users to make admin</div>';
+            });
+        }
+
+        async function updateGroupSettings() {
+            const value = document.querySelector('input[name="groupMode"]:checked').value;
+            const onlyAdmins = value === 'admins';
+            
+            await database.ref('groups/' + currentChat.id + '/settings').update({
+                onlyAdmins: onlyAdmins
+            });
+            
+            currentChat.group.settings.onlyAdmins = onlyAdmins;
+            checkGroupPermissions(currentChat.group);
+        }
+
+        async function makeAdmin(userId) {
+            await database.ref('groups/' + currentChat.id + '/admins/' + userId).set(true);
+            loadParticipants();
+            loadMakeAdminList();
+        }
+
+        async function banFromGroup(userId) {
+            if (userId === currentUser.uid) return;
+            
+            if (confirm('Remove this user from group?')) {
+                await database.ref('groups/' + currentChat.id + '/members/' + userId).remove();
+                await database.ref('groups/' + currentChat.id + '/admins/' + userId).remove();
+                loadParticipants();
+            }
+        }
+
+        // Show banned users (admin only)
+        function showBannedUsers() {
+            if (currentUser.role !== 'admin') {
+                alert('Admin only');
+                return;
+            }
+            
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val();
+                let html = '';
+                
+                Object.values(users).forEach(user => {
+                    if (user.banned) {
+                        html += `
+                            <div class="user-list-item">
+                                <div class="user-avatar">
+                                    ${user.photoURL ? 
+                                        `<img src="${user.photoURL}">` : 
+                                        `<i class="fas fa-user"></i>`
+                                    }
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">${user.username}</div>
+                                    <div class="user-role">Banned</div>
+                                </div>
+                                <i class="fas fa-undo" onclick="unbanUser('${user.uid}')" style="color: #00a884; cursor: pointer;"></i>
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('bannedUsersList').innerHTML = html || '<div>No banned users</div>';
+                document.getElementById('bannedUsersModal').classList.add('active');
+            });
+        }
+
+        // Add participant to group
+        function showAddParticipantModal() {
+            document.getElementById('addParticipantModal').classList.add('active');
+            
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val();
+                let html = '';
+                
+                Object.values(users).forEach(user => {
+                    if (!currentChat.group.members[user.uid] && !user.banned) {
+                        html += `
+                            <div class="user-list-item" onclick="toggleParticipantSelection('${user.uid}')">
+                                <div class="user-avatar">
+                                    ${user.photoURL ? 
+                                        `<img src="${user.photoURL}">` : 
+                                        `<i class="fas fa-user"></i>`
+                                    }
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">${user.username}</div>
+                                </div>
+                                <i class="fas fa-check" id="part-check-${user.uid}" style="color: #00a884; display: none;"></i>
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('availableUsersList').innerHTML = html;
+            });
+        }
+
+        function toggleParticipantSelection(userId) {
+            if (selectedUsers.has(userId)) {
+                selectedUsers.delete(userId);
+                document.getElementById(`part-check-${userId}`).style.display = 'none';
+            } else {
+                selectedUsers.add(userId);
+                document.getElementById(`part-check-${userId}`).style.display = 'block';
+            }
+        }
+
+        async function addParticipants() {
+            if (selectedUsers.size === 0) {
+                alert('Select at least one user');
+                return;
+            }
+            
+            const updates = {};
+            selectedUsers.forEach(uid => {
+                updates[`groups/${currentChat.id}/members/${uid}`] = true;
+            });
+            
+            await database.ref().update(updates);
+            
+            closeModal('addParticipantModal');
+            selectedUsers.clear();
+        }
+
+        // Group info
+        function showGroupInfo() {
+            if (!currentChat || currentChat.type !== 'group') return;
+            
+            let memberList = '';
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val();
+                
+                Object.keys(currentChat.group.members).forEach(uid => {
+                    const user = users[uid];
+                    if (user) {
+                        const isAdmin = currentChat.group.admins && currentChat.group.admins[uid];
+                        memberList += `
+                            <div class="user-list-item">
+                                <div class="user-avatar">
+                                    ${user.photoURL ? 
+                                        `<img src="${user.photoURL}">` : 
+                                        `<i class="fas fa-user"></i>`
+                                    }
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">
+                                        ${user.username}
+                                        ${isAdmin ? '<span class="admin-badge">Admin</span>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                alert('Group Members:\n' + memberList.replace(/<[^>]*>/g, '\n'));
+            });
+        }
+
+        // Show groups list
+        function showGroupsList() {
+            database.ref('groups').once('value', (snapshot) => {
+                const groups = snapshot.val();
+                let groupList = 'Your Groups:\n';
+                
+                Object.values(groups).forEach(group => {
+                    if (group.members && group.members[currentUser.uid]) {
+                        groupList += `\n- ${group.name}`;
+                    }
+                });
+                
+                alert(groupList);
+            });
+        }
+
+        // Search users
+        function searchUsers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            // Implement search if needed
+        }
+
+        // Handle enter key
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Logout
+        function logout() {
+            auth.signOut();
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Setup realtime listeners
+        function setupRealtimeListeners() {
+            // Listen for user bans
+            database.ref('users/' + currentUser.uid + '/banned').on('value', (snapshot) => {
+                if (snapshot.val() === true) {
+                    alert('You have been banned from DivineX');
+                    auth.signOut();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
