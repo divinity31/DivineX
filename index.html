@@ -57,7 +57,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Background */
         #particles-js {
             position: fixed;
             top: 0;
@@ -68,7 +67,6 @@
             opacity: 0.5;
         }
 
-        /* Auth Container */
         #authContainer {
             min-height: 100vh;
             display: flex;
@@ -82,7 +80,6 @@
             max-width: 450px;
             background: rgba(32, 44, 51, 0.95);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -94,6 +91,42 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+
+        .flag-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .flag-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background-size: cover;
+            background-position: center;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .flag-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            border-color: var(--primary);
+        }
+
+        .flag-btn.active-flag {
+            transform: scale(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0,168,132,0.6);
+        }
+
+        .flag-us { background-image: url('https://flagcdn.com/w80/us.png'); background-size: cover; }
+        .flag-ru { background-image: url('https://flagcdn.com/w80/ru.png'); background-size: cover; }
+        .flag-it { background-image: url('https://flagcdn.com/w80/it.png'); background-size: cover; }
+        .flag-tr { background-image: url('https://flagcdn.com/w80/tr.png'); background-size: cover; }
 
         .auth-header {
             text-align: center;
@@ -142,6 +175,12 @@
 
         .auth-form.active {
             display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
@@ -189,13 +228,11 @@
             font-size: 14px;
         }
 
-        /* Main App */
         #appContainer {
             display: none;
             min-height: 100vh;
         }
 
-        /* Navigation */
         .nav-bar {
             position: fixed;
             top: 0;
@@ -283,13 +320,6 @@
             transform: scale(1.1);
         }
 
-        .nav-profile img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Main Content */
         .main-content {
             margin-top: 80px;
             padding: 20px;
@@ -300,7 +330,6 @@
             margin-right: auto;
         }
 
-        /* Left Sidebar - Chats */
         .left-sidebar {
             width: 30%;
             background: var(--bg-sidebar);
@@ -335,11 +364,6 @@
             border-radius: 30px;
             color: var(--text-light);
             font-size: 14px;
-        }
-
-        .chat-search input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px var(--primary);
         }
 
         .chat-list {
@@ -378,12 +402,6 @@
             justify-content: center;
         }
 
-        .chat-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .chat-info {
             flex: 1;
         }
@@ -416,7 +434,6 @@
             50% { opacity: 0.5; transform: scale(1.2); }
         }
 
-        /* Center Content - Feed */
         .center-content {
             width: 40%;
         }
@@ -448,12 +465,6 @@
             background: linear-gradient(45deg, var(--primary), var(--warning));
             padding: 3px;
             margin-bottom: 8px;
-            animation: rotate 10s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         .story-avatar {
@@ -481,12 +492,6 @@
             border-radius: 20px;
             margin-bottom: 20px;
             overflow: hidden;
-            animation: postAppear 0.5s ease;
-        }
-
-        @keyframes postAppear {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .post-header {
@@ -511,21 +516,6 @@
             background: var(--primary);
         }
 
-        .post-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .post-username {
-            font-weight: 600;
-        }
-
-        .post-time {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
         .post-content {
             padding: 20px;
         }
@@ -533,19 +523,6 @@
         .post-text {
             margin-bottom: 15px;
             line-height: 1.6;
-        }
-
-        .post-media {
-            margin-bottom: 15px;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .post-media img,
-        .post-media video {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
         }
 
         .post-actions {
@@ -566,66 +543,12 @@
 
         .post-action:hover {
             color: var(--primary);
-            transform: scale(1.1);
         }
 
         .post-action.liked {
             color: var(--danger);
-            animation: likePop 0.3s ease;
         }
 
-        @keyframes likePop {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .post-comments {
-            padding: 15px 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .comment-item {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .comment-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--primary);
-        }
-
-        .comment-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .comment-content {
-            flex: 1;
-        }
-
-        .comment-username {
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 3px;
-        }
-
-        .comment-text {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .comment-time {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 3px;
-        }
-
-        /* Right Sidebar - Trends */
         .right-sidebar {
             width: 30%;
             background: var(--bg-sidebar);
@@ -641,48 +564,18 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        .trending-header h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary);
-        }
-
         .trend-item {
             padding: 15px 20px;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .trend-item:hover {
             background: var(--bg-header);
-            transform: translateX(5px);
-        }
-
-        .trend-category {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-
-        .trend-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .trend-stats {
-            font-size: 12px;
-            color: var(--text-muted);
         }
 
         .suggested-users {
             padding: 20px;
-        }
-
-        .suggested-users h4 {
-            margin-bottom: 15px;
-            color: var(--primary);
         }
 
         .suggested-user {
@@ -693,34 +586,6 @@
             cursor: pointer;
         }
 
-        .suggested-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--primary);
-        }
-
-        .suggested-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .suggested-info {
-            flex: 1;
-        }
-
-        .suggested-name {
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-
-        .suggested-bio {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
         .follow-btn {
             padding: 5px 15px;
             background: var(--primary);
@@ -728,368 +593,118 @@
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .follow-btn:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
-        }
-
-        .follow-btn.following {
-            background: var(--bg-input);
-            color: var(--text-muted);
-        }
-
-        /* Create Post Modal */
-        .create-post-modal {
+        .chat-window {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: var(--bg-header);
+            border-radius: 20px;
             display: none;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        .create-post-modal.active {
+        .chat-window.active {
             display: flex;
         }
 
-        .modal-content {
-            width: 90%;
-            max-width: 600px;
-            background: var(--bg-header);
-            border-radius: 30px;
-            overflow: hidden;
-            animation: modalPop 0.4s ease;
-        }
-
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
+        .chat-window-header {
+            padding: 15px;
+            background: var(--primary);
+            border-radius: 20px 20px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .modal-header h3 {
-            color: var(--text-light);
-        }
-
-        .modal-header i {
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-        }
-
-        .modal-header i:hover {
-            color: var(--danger);
-            transform: rotate(90deg);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .post-input {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .post-user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--primary);
-        }
-
-        .post-user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .post-textarea {
+        .chat-messages {
             flex: 1;
-        }
-
-        .post-textarea textarea {
-            width: 100%;
+            overflow-y: auto;
             padding: 15px;
-            background: var(--bg-input);
-            border: none;
-            border-radius: 15px;
-            color: var(--text-light);
-            font-size: 16px;
-            resize: none;
-            min-height: 120px;
         }
 
-        .post-textarea textarea:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px var(--primary);
-        }
-
-        .char-count {
-            text-align: right;
-            color: var(--text-muted);
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .post-media-preview {
-            margin: 20px 0;
-            padding: 20px;
-            background: var(--bg-input);
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .post-media-preview img,
-        .post-media-preview video {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 10px;
-        }
-
-        .post-options {
+        .message {
+            margin-bottom: 10px;
             display: flex;
-            gap: 15px;
-            margin: 20px 0;
         }
 
-        .post-option {
-            flex: 1;
-            padding: 12px;
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message.received {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 18px;
             background: var(--bg-input);
-            border-radius: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .post-option:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
+        .message.sent .message-bubble {
+            background: var(--sent-msg);
         }
 
-        .post-option i {
-            margin-right: 8px;
-        }
-
-        .post-submit {
-            width: 100%;
+        .chat-input-area {
             padding: 15px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .post-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 168, 132, 0.4);
-        }
-
-        /* Story Viewer */
-        .story-viewer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .story-viewer.active {
             display: flex;
-        }
-
-        .story-progress {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-        }
-
-        .story-progress-bar {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            animation: progress 5s linear;
-        }
-
-        @keyframes progress {
-            to { width: 100%; }
-        }
-
-        .story-info {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            display: flex;
-            align-items: center;
             gap: 10px;
-            color: white;
+            border-top: 1px solid var(--border-color);
         }
 
-        .story-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .story-content {
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .story-content img,
-        .story-content video {
-            width: 100%;
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-input);
+            border: none;
             border-radius: 20px;
-        }
-
-        .story-close {
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            font-size: 30px;
             color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .story-close:hover {
-            transform: rotate(90deg);
-            color: var(--danger);
-        }
-
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
             background: var(--bg-header);
-            color: var(--text-light);
             padding: 15px 25px;
             border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             border-left: 4px solid var(--primary);
             z-index: 3000;
-            animation: toastSlide 0.3s ease;
+            animation: slideIn 0.3s ease;
         }
 
-        @keyframes toastSlide {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .toast.error {
-            border-left-color: var(--danger);
-        }
-
-        .toast.warning {
-            border-left-color: var(--warning);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--bg-input);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .left-sidebar,
-            .center-content,
-            .right-sidebar {
-                width: 100%;
-                position: static;
-                height: auto;
-            }
-            
-            .nav-menu {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .auth-card {
-                padding: 30px 20px;
-            }
-            
-            .story-container {
-                gap: 10px;
-            }
-            
-            .story-ring {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .post-options {
-                flex-direction: column;
-            }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
-    <!-- Particles Background -->
     <div id="particles-js"></div>
 
-    <!-- Auth Container -->
     <div id="authContainer">
         <div class="auth-card">
+            <div class="flag-selector">
+                <div class="flag-btn flag-us active-flag" data-lang="en" onclick="setLanguage('en', this)"></div>
+                <div class="flag-btn flag-ru" data-lang="ru" onclick="setLanguage('ru', this)"></div>
+                <div class="flag-btn flag-it" data-lang="it" onclick="setLanguage('it', this)"></div>
+                <div class="flag-btn flag-tr" data-lang="tr" onclick="setLanguage('tr', this)"></div>
+            </div>
             <div class="auth-header">
                 <h1>DivineX</h1>
-                <p>Connect with the world</p>
+                <p id="subtitleText">Connect with the world</p>
             </div>
-
             <div class="auth-tabs">
-                <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
-                <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+                <div class="auth-tab active" onclick="switchAuthTab('login')" id="loginTabBtn">Login</div>
+                <div class="auth-tab" onclick="switchAuthTab('register')" id="registerTabBtn">Register</div>
             </div>
-
-            <!-- Login Form -->
             <div id="loginForm" class="auth-form active">
                 <div class="form-group">
                     <input type="text" id="loginUsername" placeholder="Username">
@@ -1097,11 +712,9 @@
                 <div class="form-group">
                     <input type="password" id="loginPassword" placeholder="Password">
                 </div>
-                <button class="btn" onclick="login()">Login</button>
+                <button class="btn" onclick="login()" id="loginBtnText">Login</button>
                 <div id="loginError" class="error-message"></div>
             </div>
-
-            <!-- Register Form -->
             <div id="registerForm" class="auth-form">
                 <div class="form-group">
                     <input type="text" id="registerUsername" placeholder="Username">
@@ -1115,48 +728,34 @@
                 <div class="form-group">
                     <input type="password" id="registerConfirmPassword" placeholder="Confirm Password">
                 </div>
-                <button class="btn" onclick="register()">Register</button>
+                <button class="btn" onclick="register()" id="registerBtnText">Register</button>
                 <div id="registerError" class="error-message"></div>
             </div>
         </div>
     </div>
 
-    <!-- Main App Container -->
     <div id="appContainer">
-        <!-- Navigation Bar -->
         <div class="nav-bar">
             <div class="nav-logo">DivineX</div>
             <div class="nav-menu">
                 <div class="nav-item active" onclick="switchTab('home')">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
+                    <i class="fas fa-home"></i><span>Home</span>
                 </div>
                 <div class="nav-item" onclick="switchTab('explore')">
-                    <i class="fas fa-compass"></i>
-                    <span>Explore</span>
-                </div>
-                <div class="nav-item" onclick="showCreatePost()">
-                    <i class="fas fa-plus-square"></i>
-                    <span>Create</span>
+                    <i class="fas fa-compass"></i><span>Explore</span>
                 </div>
                 <div class="nav-item" onclick="switchTab('notifications')">
-                    <i class="fas fa-bell"></i>
-                    <span>Alerts</span>
+                    <i class="fas fa-bell"></i><span>Alerts</span>
                 </div>
                 <div class="nav-item" onclick="switchTab('profile')">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
+                    <i class="fas fa-user"></i><span>Profile</span>
                 </div>
             </div>
-            <div class="nav-profile" onclick="showProfileModal()" id="navProfile">
-                <i class="fas fa-user"></i>
-                <img id="navProfileImg" src="" style="display: none;">
+            <div class="nav-profile" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
             </div>
         </div>
-
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Left Sidebar - Chats -->
             <div class="left-sidebar">
                 <div class="sidebar-header">
                     <h3><i class="fas fa-comments"></i> Messages</h3>
@@ -1166,25 +765,17 @@
                 </div>
                 <div class="chat-list" id="chatList"></div>
             </div>
-
-            <!-- Center Content - Feed -->
-            <div class="center-content" id="feedContainer">
-                <!-- Stories -->
+            <div class="center-content">
                 <div class="story-section">
                     <div class="story-container" id="storiesContainer"></div>
                 </div>
-
-                <!-- Feed Posts -->
                 <div id="feedPosts"></div>
             </div>
-
-            <!-- Right Sidebar - Trends -->
             <div class="right-sidebar">
                 <div class="trending-header">
                     <h3><i class="fas fa-fire"></i> Trending</h3>
                 </div>
-                <div class="trending-list" id="trendingList"></div>
-                
+                <div id="trendingList"></div>
                 <div class="suggested-users">
                     <h4>Suggested for you</h4>
                     <div id="suggestedUsers"></div>
@@ -1193,60 +784,21 @@
         </div>
     </div>
 
-    <!-- Create Post Modal -->
-    <div class="create-post-modal" id="createPostModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Create Post</h3>
-                <i class="fas fa-times" onclick="closeCreatePost()"></i>
-            </div>
-            <div class="modal-body">
-                <div class="post-input">
-                    <div class="post-user-avatar" id="postUserAvatar">
-                        <i class="fas fa-user"></i>
-                        <img id="postUserAvatarImg" src="" style="display: none;">
-                    </div>
-                    <div class="post-textarea">
-                        <textarea id="postText" placeholder="What's on your mind?" maxlength="500"></textarea>
-                        <div class="char-count"><span id="charCount">0</span>/500</div>
-                    </div>
-                </div>
-
-                <div class="post-media-preview" id="postMediaPreview" style="display: none;"></div>
-
-                <div class="post-options">
-                    <div class="post-option" onclick="uploadPostImage()">
-                        <i class="fas fa-image"></i> Photo
-                    </div>
-                    <div class="post-option" onclick="uploadPostVideo()">
-                        <i class="fas fa-video"></i> Video
-                    </div>
-                </div>
-
-                <button class="post-submit" onclick="createPost()">
-                    <i class="fas fa-paper-plane"></i> Post
-                </button>
-            </div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-window-header">
+            <span id="chatUserName">User</span>
+            <i class="fas fa-times" onclick="closeChat()" style="cursor: pointer;"></i>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button class="btn" style="width: auto; padding: 10px 20px;" onclick="sendMessage()">Send</button>
         </div>
     </div>
 
-    <!-- Story Viewer -->
-    <div class="story-viewer" id="storyViewer" onclick="closeStory()">
-        <div class="story-progress">
-            <div class="story-progress-bar" id="storyProgress"></div>
-        </div>
-        <div class="story-info" id="storyInfo"></div>
-        <div class="story-content" id="storyContent"></div>
-        <div class="story-close" onclick="closeStory()">
-            <i class="fas fa-times"></i>
-        </div>
-    </div>
-
-    <!-- Toast Container -->
     <div id="toastContainer"></div>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC5a7AmwYgCJtan_c2BVDZVU9z7s29vwvQ",
             authDomain: "divinex-edc56.firebaseapp.com",
@@ -1257,244 +809,236 @@
             appId: "1:62193852994:web:e582135f2815a1aa1a43db"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
-        const storage = firebase.storage();
 
-        // Global variables
         let currentUser = null;
-        let selectedPostFile = null;
-        let trends = [
-            { category: 'Technology', name: '#DivineX', posts: '125K' },
-            { category: 'Trending', name: 'New Features', posts: '85K' },
-            { category: 'Community', name: 'Welcome', posts: '234K' },
-            { category: 'Updates', name: 'Version 2.0', posts: '56K' }
-        ];
+        let selectedChatUser = null;
+        let currentLang = 'en';
 
-        // Initialize particles
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#00a884' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.3, random: true },
-                size: { value: 3, random: true },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: '#00a884',
-                    opacity: 0.2,
-                    width: 1
-                },
-                move: { enable: true, speed: 2 }
-            }
-        });
+        const translations = {
+            en: { subtitle: "Connect with the world", login: "Login", register: "Register", loginBtn: "Login", registerBtn: "Register", username: "Username", email: "Email", password: "Password", confirm: "Confirm Password", welcome: "Welcome, " },
+            ru: { subtitle: "Связь с миром", login: "Вход", register: "Регистрация", loginBtn: "Войти", registerBtn: "Зарегистрироваться", username: "Имя пользователя", email: "Электронная почта", password: "Пароль", confirm: "Подтвердите пароль", welcome: "Добро пожаловать, " },
+            it: { subtitle: "Connettiti con il mondo", login: "Accedi", register: "Registrati", loginBtn: "Accedi", registerBtn: "Registrati", username: "Nome utente", email: "Email", password: "Password", confirm: "Conferma password", welcome: "Benvenuto, " },
+            tr: { subtitle: "Dünyayla bağlanın", login: "Giriş Yap", register: "Kayıt Ol", loginBtn: "Giriş Yap", registerBtn: "Kayıt Ol", username: "Kullanıcı Adı", email: "E-posta", password: "Şifre", confirm: "Şifreyi Onayla", welcome: "Hoş geldin, " }
+        };
 
-        // Hash password
-        function hashPassword(password) {
-            return CryptoJS.SHA256(password).toString();
+        function setLanguage(lang, element) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('subtitleText').innerText = t.subtitle;
+            document.getElementById('loginTabBtn').innerText = t.login;
+            document.getElementById('registerTabBtn').innerText = t.register;
+            document.getElementById('loginBtnText').innerText = t.loginBtn;
+            document.getElementById('registerBtnText').innerText = t.registerBtn;
+            document.getElementById('loginUsername').placeholder = t.username;
+            document.getElementById('loginPassword').placeholder = t.password;
+            document.getElementById('registerUsername').placeholder = t.username;
+            document.getElementById('registerEmail').placeholder = t.email;
+            document.getElementById('registerPassword').placeholder = t.password;
+            document.getElementById('registerConfirmPassword').placeholder = t.confirm;
+            document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active-flag'));
+            if(element) element.classList.add('active-flag');
         }
 
-        // Show toast
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"></i>
-                <span>${message}</span>
-            `;
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
             document.getElementById('toastContainer').appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
+            setTimeout(() => toast.remove(), 3000);
         }
 
-        // Switch auth tab
-        function switchAuthTab(tab) {
-            document.querySelectorAll('.auth-tab').forEach(t => {
-                t.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            document.getElementById('loginForm').classList.toggle('active', tab === 'login');
-            document.getElementById('registerForm').classList.toggle('active', tab === 'register');
-        }
+        function hashPassword(pwd) { return CryptoJS.SHA256(pwd).toString(); }
 
-        // Register
         async function register() {
             const username = document.getElementById('registerUsername').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-
-            if (!username || !email || !password) {
-                showToast('All fields required', 'error');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showToast('Passwords do not match', 'error');
-                return;
-            }
-
-            try {
-                const snapshot = await database.ref('usernames/' + username).once('value');
-                if (snapshot.exists()) {
-                    showToast('Username already taken', 'error');
-                    return;
-                }
-
-                const credential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = credential.user;
-                
-                const hashedPassword = hashPassword(password);
-
-                await database.ref('users/' + user.uid).set({
-                    uid: user.uid,
-                    username: username,
-                    email: email,
-                    password: hashedPassword,
-                    photoURL: null,
-                    bio: 'New to DivineX',
-                    followers: 0,
-                    following: 0,
-                    posts: 0,
-                    role: 'user',
-                    banned: false,
-                    createdAt: new Date().toISOString(),
-                    lastSeen: new Date().toISOString(),
-                    status: 'online'
-                });
-
-                await database.ref('usernames/' + username).set(user.uid);
-                
-                await createAdminIfNotExists();
-                
-                showToast('Registration successful!', 'success');
-
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
+            const confirm = document.getElementById('registerConfirmPassword').value;
+            if(!username || !email || !password) { showToast('All fields required', 'error'); return; }
+            if(password !== confirm) { showToast('Passwords do not match', 'error'); return; }
+            const existing = await database.ref('usernames/' + username).once('value');
+            if(existing.exists()) { showToast('Username taken', 'error'); return; }
+            const cred = await auth.createUserWithEmailAndPassword(email, password);
+            await database.ref('users/' + cred.user.uid).set({
+                uid: cred.user.uid, username, email, password: hashPassword(password),
+                photoURL: null, bio: 'New user', status: 'online', lastSeen: new Date().toISOString()
+            });
+            await database.ref('usernames/' + username).set(cred.user.uid);
+            showToast('Registration successful!', 'success');
         }
 
-        // Login
         async function login() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
+            if(!username || !password) { showToast('All fields required', 'error'); return; }
+            const uid = (await database.ref('usernames/' + username).once('value')).val();
+            if(!uid) { showToast('User not found', 'error'); return; }
+            const userData = (await database.ref('users/' + uid).once('value')).val();
+            if(!userData) { showToast('User not found', 'error'); return; }
+            if(hashPassword(password) !== userData.password) { showToast('Invalid password', 'error'); return; }
+            await auth.signInWithEmailAndPassword(userData.email, password);
+        }
 
-            if (!username || !password) {
-                showToast('All fields required', 'error');
-                return;
-            }
-
-            try {
-                const uidSnapshot = await database.ref('usernames/' + username).once('value');
-                const uid = uidSnapshot.val();
-
-                if (!uid) {
-                    showToast('User not found', 'error');
-                    return;
-                }
-
-                const userSnapshot = await database.ref('users/' + uid).once('value');
-                const userData = userSnapshot.val();
-
-                if (!userData) {
-                    showToast('User not found', 'error');
-                    return;
-                }
-
-                if (userData.banned) {
-                    showToast('You are banned from DivineX', 'error');
-                    return;
-                }
-
-                const hashedInput = hashPassword(password);
-                if (hashedInput !== userData.password) {
-                    showToast('Invalid password', 'error');
-                    return;
-                }
-
-                await auth.signInWithEmailAndPassword(userData.email, password);
-
-            } catch (error) {
-                showToast(error.message, 'error');
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            if(tab === 'login') {
+                document.querySelector('.auth-tab:first-child').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+                document.getElementById('registerForm').classList.remove('active');
+            } else {
+                document.querySelector('.auth-tab:last-child').classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+                document.getElementById('loginForm').classList.remove('active');
             }
         }
 
-        // Create admin
-        async function createAdminIfNotExists() {
-            const adminUsername = 'DivineX_Admin';
-            const adminPassword = 'UnholyDaddyDivineX';
-            const adminEmail = 'admin@divinex.com';
-            
-            const adminSnapshot = await database.ref('usernames/' + adminUsername).once('value');
-            if (!adminSnapshot.exists()) {
-                try {
-                    const credential = await auth.createUserWithEmailAndPassword(adminEmail, adminPassword);
-                    const adminUid = credential.user.uid;
-                    
-                    const hashedAdminPassword = hashPassword(adminPassword);
-                    
-                    await database.ref('users/' + adminUid).set({
-                        uid: adminUid,
-                        username: adminUsername,
-                        email: adminEmail,
-                        password: hashedAdminPassword,
-                        photoURL: null,
-                        bio: 'DivineX Administrator',
-                        followers: 0,
-                        following: 0,
-                        posts: 0,
-                        role: 'admin',
-                        banned: false,
-                        createdAt: new Date().toISOString(),
-                        lastSeen: new Date().toISOString(),
-                        status: 'online'
-                    });
-                    
-                    await database.ref('usernames/' + adminUsername).set(adminUid);
-                    
-                    console.log('Admin created');
-                } catch (error) {
-                    console.error('Admin creation error:', error);
+        function loadChats() {
+            database.ref('users').on('value', (snapshot) => {
+                const users = snapshot.val();
+                let html = '';
+                for(let id in users) {
+                    if(id !== currentUser.uid && !users[id].banned) {
+                        html += `<div class="chat-item" onclick="openChat('${id}', '${users[id].username}')">
+                            <div class="chat-avatar"><i class="fas fa-user"></i></div>
+                            <div class="chat-info">
+                                <div class="chat-name">${users[id].username}</div>
+                                <div class="chat-status"><span class="online-dot" style="background: ${users[id].status === 'online' ? 'var(--primary)' : 'gray'}"></span>${users[id].status === 'online' ? 'Online' : 'Offline'}</div>
+                            </div>
+                        </div>`;
+                    }
                 }
+                document.getElementById('chatList').innerHTML = html || '<div style="padding:20px;text-align:center">No users</div>';
+            });
+        }
+
+        function openChat(userId, username) {
+            selectedChatUser = { id: userId, username };
+            document.getElementById('chatUserName').innerText = username;
+            document.getElementById('chatWindow').classList.add('active');
+            loadMessages();
+        }
+
+        function closeChat() {
+            document.getElementById('chatWindow').classList.remove('active');
+            if(selectedChatUser) {
+                database.ref(`messages/${currentUser.uid}_${selectedChatUser.id}`).off();
+                selectedChatUser = null;
             }
         }
 
-        // Auth state observer
+        function loadMessages() {
+            const chatId = `${currentUser.uid}_${selectedChatUser.id}`;
+            const reverseId = `${selectedChatUser.id}_${currentUser.uid}`;
+            const messagesRef = database.ref(`messages/${chatId}`).orderByChild('timestamp');
+            messagesRef.on('value', (snapshot) => {
+                const messages = snapshot.val();
+                let html = '';
+                for(let id in messages) {
+                    const msg = messages[id];
+                    const isSent = msg.senderId === currentUser.uid;
+                    html += `<div class="message ${isSent ? 'sent' : 'received'}">
+                        <div class="message-bubble">${msg.text}<br><small style="font-size:10px">${moment(msg.timestamp).format('LT')}</small></div>
+                    </div>`;
+                }
+                document.getElementById('chatMessages').innerHTML = html;
+                document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+            });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text || !selectedChatUser) return;
+            const chatId = `${currentUser.uid}_${selectedChatUser.id}`;
+            database.ref(`messages/${chatId}`).push({
+                senderId: currentUser.uid,
+                receiverId: selectedChatUser.id,
+                text: text,
+                timestamp: Date.now()
+            });
+            input.value = '';
+        }
+
+        function searchChats() {
+            const search = document.getElementById('chatSearch').value.toLowerCase();
+            document.querySelectorAll('.chat-item').forEach(item => {
+                const name = item.querySelector('.chat-name').textContent.toLowerCase();
+                item.style.display = name.includes(search) ? 'flex' : 'none';
+            });
+        }
+
+        function loadStories() {
+            database.ref('users').limitToFirst(10).once('value', (snap) => {
+                let html = `<div class="story-item" onclick="showToast('Create story coming soon','warning')"><div class="story-ring"><div class="story-avatar"><i class="fas fa-plus"></i></div></div><div class="story-name">Your Story</div></div>`;
+                const users = snap.val();
+                for(let id in users) {
+                    if(id !== currentUser.uid) {
+                        html += `<div class="story-item" onclick="showToast('Story view coming','info')"><div class="story-ring"><div class="story-avatar"><i class="fas fa-user"></i></div></div><div class="story-name">${users[id].username}</div></div>`;
+                    }
+                }
+                document.getElementById('storiesContainer').innerHTML = html;
+            });
+        }
+
+        function loadFeed() {
+            const feedDiv = document.getElementById('feedPosts');
+            feedDiv.innerHTML = `<div class="feed-post"><div class="post-header"><div class="post-user"><div class="post-avatar"><i class="fas fa-user"></i></div><div><strong>DivineX</strong></div></div></div><div class="post-content"><div class="post-text">Welcome to DivineX! Share your moments with the world. 🔥</div></div><div class="post-actions"><div class="post-action"><i class="fas fa-heart"></i> 1.2K</div><div class="post-action"><i class="fas fa-comment"></i> 89</div></div></div>`;
+        }
+
+        function loadTrending() {
+            const trends = ['#DivineX', '#NewWorld', '#Social', '#Connect'];
+            let html = '';
+            trends.forEach(t => {
+                html += `<div class="trend-item" onclick="showToast('Searching ${t}','info')"><div class="trend-name">${t}</div><div class="trend-stats">Trending</div></div>`;
+            });
+            document.getElementById('trendingList').innerHTML = html;
+        }
+
+        function loadSuggestedUsers() {
+            database.ref('users').limitToFirst(5).once('value', (snap) => {
+                let html = '';
+                const users = snap.val();
+                for(let id in users) {
+                    if(id !== currentUser.uid) {
+                        html += `<div class="suggested-user"><div class="suggested-avatar"><i class="fas fa-user"></i></div><div class="suggested-info"><div class="suggested-name">${users[id].username}</div></div><button class="follow-btn" onclick="showToast('Followed!','success')">Follow</button></div>`;
+                    }
+                }
+                document.getElementById('suggestedUsers').innerHTML = html;
+            });
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            if(tab === 'home') loadFeed();
+            else if(tab === 'explore') showToast('Explore coming soon', 'warning');
+            else if(tab === 'notifications') showToast('Notifications coming soon', 'warning');
+            else if(tab === 'profile') showToast('Profile coming soon', 'warning');
+        }
+
+        async function logout() {
+            if(currentUser) await database.ref('users/' + currentUser.uid).update({ status: 'offline', lastSeen: new Date().toISOString() });
+            auth.signOut();
+            showToast('Logged out', 'success');
+        }
+
         auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const snapshot = await database.ref('users/' + user.uid).once('value');
-                currentUser = snapshot.val();
-                
-                if (currentUser && !currentUser.banned) {
+            if(user) {
+                const snap = await database.ref('users/' + user.uid).once('value');
+                currentUser = snap.val();
+                if(currentUser) {
                     document.getElementById('authContainer').style.display = 'none';
                     document.getElementById('appContainer').style.display = 'block';
-                    
-                    if (currentUser.photoURL) {
-                        document.getElementById('navProfile').innerHTML = `<img src="${currentUser.photoURL}">`;
-                        document.getElementById('postUserAvatar').innerHTML = `<img src="${currentUser.photoURL}">`;
-                    }
-                    
+                    await database.ref('users/' + user.uid).update({ status: 'online', lastSeen: new Date().toISOString() });
+                    showToast(translations[currentLang].welcome + currentUser.username, 'success');
                     loadChats();
                     loadStories();
                     loadFeed();
                     loadTrending();
                     loadSuggestedUsers();
-                    
-                    await database.ref('users/' + user.uid).update({
-                        status: 'online',
-                        lastSeen: new Date().toISOString()
-                    });
-                    
-                    showToast(`Welcome, ${currentUser.username}!`, 'success');
-                    
-                } else {
-                    auth.signOut();
                 }
             } else {
                 document.getElementById('authContainer').style.display = 'flex';
@@ -1503,456 +1047,11 @@
             }
         });
 
-        // Load chats
-        function loadChats() {
-            const chatList = document.getElementById('chatList');
-            
-            database.ref('users').once('value', (snapshot) => {
-                const users = snapshot.val();
-                let html = '';
-                
-                if (users) {
-                    Object.values(users).forEach(user => {
-                        if (user.uid !== currentUser.uid && !user.banned) {
-                            html += `
-                                <div class="chat-item" onclick="openChat('${user.uid}')">
-                                    <div class="chat-avatar">
-                                        ${user.photoURL ? 
-                                            `<img src="${user.photoURL}">` : 
-                                            `<i class="fas fa-user"></i>`
-                                        }
-                                    </div>
-                                    <div class="chat-info">
-                                        <div class="chat-name">
-                                            ${user.username}
-                                            ${user.role === 'admin' ? '<span style="background: var(--primary); padding: 2px 5px; border-radius: 3px; font-size: 10px;">Admin</span>' : ''}
-                                        </div>
-                                        <div class="chat-status">
-                                            <span class="online-dot" style="background: ${user.status === 'online' ? 'var(--primary)' : 'var(--text-muted)'};"></span>
-                                            ${user.status === 'online' ? 'Online' : moment(user.lastSeen).fromNow()}
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    });
-                }
-                
-                chatList.innerHTML = html || '<div style="padding: 20px; text-align: center;">No users found</div>';
-            });
-        }
+        particlesJS('particles-js', {
+            particles: { number: { value: 80 }, color: { value: '#00a884' }, shape: { type: 'circle' }, opacity: { value: 0.3 }, size: { value: 3 }, move: { enable: true, speed: 2 } }
+        });
 
-        // Open chat
-        function openChat(userId) {
-            showToast('Chat feature coming soon!', 'warning');
-        }
-
-        // Search chats
-        function searchChats() {
-            const search = document.getElementById('chatSearch').value.toLowerCase();
-            const items = document.querySelectorAll('.chat-item');
-            
-            items.forEach(item => {
-                const name = item.querySelector('.chat-name').textContent.toLowerCase();
-                item.style.display = name.includes(search) ? 'flex' : 'none';
-            });
-        }
-
-        // Load stories
-        function loadStories() {
-            const storiesContainer = document.getElementById('storiesContainer');
-            
-            database.ref('users').limitToFirst(10).once('value', (snapshot) => {
-                const users = snapshot.val();
-                let html = `
-                    <div class="story-item" onclick="createStory()">
-                        <div class="story-ring" style="background: linear-gradient(45deg, var(--primary), var(--primary-light));">
-                            <div class="story-avatar">
-                                ${currentUser.photoURL ? 
-                                    `<img src="${currentUser.photoURL}">` : 
-                                    `<i class="fas fa-plus" style="display: flex; align-items: center; justify-content: center; height: 100%;"></i>`
-                                }
-                            </div>
-                        </div>
-                        <div class="story-name">Your Story</div>
-                    </div>
-                `;
-                
-                if (users) {
-                    Object.values(users).forEach(user => {
-                        if (user.uid !== currentUser.uid && !user.banned) {
-                            html += `
-                                <div class="story-item" onclick="viewStory('${user.uid}')">
-                                    <div class="story-ring">
-                                        <div class="story-avatar">
-                                            ${user.photoURL ? 
-                                                `<img src="${user.photoURL}">` : 
-                                                `<i class="fas fa-user"></i>`
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="story-name">${user.username}</div>
-                                </div>
-                            `;
-                        }
-                    });
-                }
-                
-                storiesContainer.innerHTML = html;
-            });
-        }
-
-        // Create story
-        function createStory() {
-            showToast('Create story feature coming soon!', 'warning');
-        }
-
-        // View story
-        function viewStory(userId) {
-            const viewer = document.getElementById('storyViewer');
-            const progress = document.getElementById('storyProgress');
-            const info = document.getElementById('storyInfo');
-            const content = document.getElementById('storyContent');
-            
-            database.ref('users/' + userId).once('value', (snapshot) => {
-                const user = snapshot.val();
-                
-                info.innerHTML = `
-                    <img src="${user.photoURL || 'https://via.placeholder.com/40'}" onerror="this.src='https://via.placeholder.com/40'">
-                    <span>${user.username}</span>
-                `;
-                
-                content.innerHTML = `
-                    <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); padding: 100px; border-radius: 20px;">
-                        <i class="fas fa-image" style="font-size: 50px; color: white;"></i>
-                        <p style="color: white; margin-top: 20px;">Sample Story</p>
-                    </div>
-                `;
-                
-                viewer.classList.add('active');
-                
-                progress.style.width = '0%';
-                progress.style.animation = 'none';
-                setTimeout(() => {
-                    progress.style.animation = 'progress 5s linear';
-                }, 10);
-                
-                setTimeout(() => {
-                    closeStory();
-                }, 5000);
-            });
-        }
-
-        // Close story
-        function closeStory() {
-            document.getElementById('storyViewer').classList.remove('active');
-        }
-
-        // Load feed
-        function loadFeed() {
-            const feedContainer = document.getElementById('feedPosts');
-            
-            const samplePosts = [
-                {
-                    id: 1,
-                    username: 'DivineX',
-                    avatar: null,
-                    time: '2h ago',
-                    content: 'Welcome to DivineX! The ultimate social experience! 🚀',
-                    media: null,
-                    likes: 1234,
-                    comments: 89,
-                    liked: false
-                },
-                {
-                    id: 2,
-                    username: 'Community',
-                    avatar: null,
-                    time: '4h ago',
-                    content: 'New features coming soon! Stay tuned! 🔥',
-                    media: 'https://via.placeholder.com/600x400',
-                    likes: 2345,
-                    comments: 123,
-                    liked: true
-                },
-                {
-                    id: 3,
-                    username: 'Updates',
-                    avatar: null,
-                    time: '6h ago',
-                    content: 'Welcome all new users! #DivineX',
-                    media: null,
-                    likes: 5678,
-                    comments: 234,
-                    liked: false
-                }
-            ];
-            
-            let html = '';
-            
-            samplePosts.forEach(post => {
-                html += `
-                    <div class="feed-post">
-                        <div class="post-header">
-                            <div class="post-user">
-                                <div class="post-avatar">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                                <div>
-                                    <div class="post-username">${post.username}</div>
-                                    <div class="post-time">${post.time}</div>
-                                </div>
-                            </div>
-                            <i class="fas fa-ellipsis-h"></i>
-                        </div>
-                        <div class="post-content">
-                            <div class="post-text">${post.content}</div>
-                            ${post.media ? `
-                                <div class="post-media">
-                                    <img src="${post.media}">
-                                </div>
-                            ` : ''}
-                        </div>
-                        <div class="post-actions">
-                            <div class="post-action ${post.liked ? 'liked' : ''}" onclick="likePost(${post.id})">
-                                <i class="fas ${post.liked ? 'fa-heart' : 'fa-heart'}"></i>
-                                <span>${post.likes}</span>
-                            </div>
-                            <div class="post-action" onclick="commentPost(${post.id})">
-                                <i class="fas fa-comment"></i>
-                                <span>${post.comments}</span>
-                            </div>
-                            <div class="post-action" onclick="sharePost(${post.id})">
-                                <i class="fas fa-share"></i>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            feedContainer.innerHTML = html;
-        }
-
-        // Like post
-        function likePost(postId) {
-            showToast('Post liked!', 'success');
-        }
-
-        // Comment on post
-        function commentPost(postId) {
-            showToast('Comment feature coming soon!', 'warning');
-        }
-
-        // Share post
-        function sharePost(postId) {
-            showToast('Share feature coming soon!', 'warning');
-        }
-
-        // Load trending
-        function loadTrending() {
-            const trendingList = document.getElementById('trendingList');
-            let html = '';
-            
-            trends.forEach(trend => {
-                html += `
-                    <div class="trend-item" onclick="searchTrend('${trend.name}')">
-                        <div class="trend-category">${trend.category}</div>
-                        <div class="trend-name">${trend.name}</div>
-                        <div class="trend-stats">${trend.posts} posts</div>
-                    </div>
-                `;
-            });
-            
-            trendingList.innerHTML = html;
-        }
-
-        // Search trend
-        function searchTrend(trend) {
-            showToast(`Searching for ${trend}...`, 'warning');
-        }
-
-        // Load suggested users
-        function loadSuggestedUsers() {
-            const suggestedContainer = document.getElementById('suggestedUsers');
-            
-            database.ref('users').limitToFirst(5).once('value', (snapshot) => {
-                const users = snapshot.val();
-                let html = '';
-                
-                if (users) {
-                    Object.values(users).forEach(user => {
-                        if (user.uid !== currentUser.uid && !user.banned) {
-                            html += `
-                                <div class="suggested-user">
-                                    <div class="suggested-avatar">
-                                        ${user.photoURL ? 
-                                            `<img src="${user.photoURL}">` : 
-                                            `<i class="fas fa-user"></i>`
-                                        }
-                                    </div>
-                                    <div class="suggested-info">
-                                        <div class="suggested-name">${user.username}</div>
-                                        <div class="suggested-bio">${user.bio || 'New user'}</div>
-                                    </div>
-                                    <button class="follow-btn" onclick="followUser('${user.uid}', this)">Follow</button>
-                                </div>
-                            `;
-                        }
-                    });
-                }
-                
-                suggestedContainer.innerHTML = html;
-            });
-        }
-
-        // Follow user
-        function followUser(userId, btn) {
-            if (btn.classList.contains('following')) {
-                btn.classList.remove('following');
-                btn.textContent = 'Follow';
-                showToast('Unfollowed user', 'success');
-            } else {
-                btn.classList.add('following');
-                btn.textContent = 'Following';
-                showToast('Following user', 'success');
-            }
-        }
-
-        // Show create post modal
-        function showCreatePost() {
-            document.getElementById('createPostModal').classList.add('active');
-            
-            const textarea = document.getElementById('postText');
-            textarea.addEventListener('input', function() {
-                document.getElementById('charCount').textContent = this.value.length;
-            });
-        }
-
-        // Close create post
-        function closeCreatePost() {
-            document.getElementById('createPostModal').classList.remove('active');
-            document.getElementById('postText').value = '';
-            document.getElementById('postMediaPreview').style.display = 'none';
-            document.getElementById('postMediaPreview').innerHTML = '';
-            selectedPostFile = null;
-        }
-
-        // Upload post image
-        function uploadPostImage() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    selectedPostFile = file;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const preview = document.getElementById('postMediaPreview');
-                        preview.innerHTML = `<img src="${e.target.result}">`;
-                        preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        }
-
-        // Upload post video
-        function uploadPostVideo() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'video/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    selectedPostFile = file;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const preview = document.getElementById('postMediaPreview');
-                        preview.innerHTML = `<video controls src="${e.target.result}"></video>`;
-                        preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        }
-
-        // Create post
-        async function createPost() {
-            const text = document.getElementById('postText').value.trim();
-            
-            if (!text && !selectedPostFile) {
-                showToast('Please enter text or select media', 'error');
-                return;
-            }
-            
-            const post = {
-                userId: currentUser.uid,
-                username: currentUser.username,
-                text: text,
-                timestamp: new Date().toISOString(),
-                likes: 0,
-                comments: 0
-            };
-            
-            if (selectedPostFile) {
-                try {
-                    const fileRef = storage.ref('posts/' + Date.now() + '_' + selectedPostFile.name);
-                    await fileRef.put(selectedPostFile);
-                    const url = await fileRef.getDownloadURL();
-                    
-                    post.media = {
-                        url: url,
-                        type: selectedPostFile.type
-                    };
-                } catch (error) {
-                    showToast(error.message, 'error');
-                    return;
-                }
-            }
-            
-            await database.ref('posts').push(post);
-            
-            closeCreatePost();
-            showToast('Post created successfully!', 'success');
-            loadFeed();
-        }
-
-        // Switch tab
-        function switchTab(tab) {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            if (tab === 'profile') {
-                showProfileModal();
-            } else if (tab === 'explore') {
-                showToast('Explore feature coming soon!', 'warning');
-            } else if (tab === 'notifications') {
-                showToast('Notifications feature coming soon!', 'warning');
-            }
-        }
-
-        // Show profile modal
-        function showProfileModal() {
-            showToast('Profile feature coming soon!', 'warning');
-        }
-
-        // Logout
-        async function logout() {
-            if (currentUser) {
-                await database.ref('users/' + currentUser.uid).update({
-                    status: 'offline',
-                    lastSeen: new Date().toISOString()
-                });
-            }
-            
-            auth.signOut();
-            showToast('Logged out successfully', 'success');
-        }
+        setLanguage('en', document.querySelector('.flag-us'));
     </script>
 </body>
 </html>
