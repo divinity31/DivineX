@@ -5,32 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DivineX</title>
     
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- CryptoJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    
-    <!-- Anime.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    
-    <!-- Moment.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         :root {
             --primary: #00a884;
             --primary-dark: #008f72;
@@ -43,652 +28,136 @@
             --text-muted: #8696a0;
             --border-color: #2f3b43;
             --sent-msg: #005c4b;
-            --received-msg: #202c33;
             --danger: #ff4d4d;
             --warning: #ffaa33;
-            --success: #00a884;
         }
-
-        body {
-            background: linear-gradient(135deg, #0a1015 0%, #111b21 100%);
-            min-height: 100vh;
-            color: var(--text-light);
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        #authContainer {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .auth-card {
-            width: 100%;
-            max-width: 450px;
-            background: rgba(32, 44, 51, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 168, 132, 0.2);
-            animation: cardFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes cardFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .flag-selector {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .flag-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            background-size: cover;
-            background-position: center;
-            border: 2px solid transparent;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        .flag-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            border-color: var(--primary);
-        }
-
-        .flag-btn.active-flag {
-            transform: scale(1.1);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0,168,132,0.6);
-        }
-
+        body { background: linear-gradient(135deg, #0a1015 0%, #111b21 100%); min-height: 100vh; color: var(--text-light); overflow-x: hidden; }
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.5; }
+        
+        #authContainer { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .auth-card { width: 100%; max-width: 450px; background: rgba(32, 44, 51, 0.95); backdrop-filter: blur(10px); border-radius: 30px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(0,168,132,0.2); animation: cardFloat 3s ease-in-out infinite; }
+        @keyframes cardFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+        .flag-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .flag-btn { width: 45px; height: 45px; border-radius: 50%; cursor: pointer; transition: all 0.3s; background-size: cover; border: 2px solid transparent; }
+        .flag-btn:hover { transform: scale(1.15); border-color: var(--primary); }
+        .flag-btn.active-flag { transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(0,168,132,0.6); }
         .flag-us { background-image: url('https://flagcdn.com/w80/us.png'); background-size: cover; }
         .flag-ru { background-image: url('https://flagcdn.com/w80/ru.png'); background-size: cover; }
         .flag-it { background-image: url('https://flagcdn.com/w80/it.png'); background-size: cover; }
         .flag-tr { background-image: url('https://flagcdn.com/w80/tr.png'); background-size: cover; }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .auth-header h1 {
-            font-size: 3em;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .auth-header p {
-            color: var(--text-muted);
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: var(--bg-input);
-            padding: 5px;
-            border-radius: 50px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .auth-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 15px;
-            background: var(--bg-input);
-            border: none;
-            border-radius: 15px;
-            color: var(--text-light);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px var(--primary);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 168, 132, 0.4);
-        }
-
-        .error-message {
-            color: var(--danger);
-            margin-top: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        #appContainer {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .nav-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(31, 44, 51, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .nav-logo {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-item i {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .nav-item span {
-            font-size: 12px;
-        }
-
-        .nav-item:hover,
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary);
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: scaleX(0); }
-            to { transform: scaleX(1); }
-        }
-
-        .nav-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            overflow: hidden;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .nav-profile:hover {
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .main-content {
-            margin-top: 80px;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .left-sidebar {
-            width: 30%;
-            background: var(--bg-sidebar);
-            border-radius: 20px;
-            overflow: hidden;
-            height: calc(100vh - 120px);
-            position: sticky;
-            top: 100px;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .sidebar-header h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary);
-        }
-
-        .chat-search {
-            padding: 15px;
-        }
-
-        .chat-search input {
-            width: 100%;
-            padding: 12px 20px;
-            background: var(--bg-input);
-            border: none;
-            border-radius: 30px;
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        .chat-list {
-            overflow-y: auto;
-            height: calc(100% - 150px);
-        }
-
-        .chat-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .chat-item:hover {
-            background: var(--bg-header);
-            transform: translateX(5px);
-        }
-
-        .chat-item.active {
-            background: var(--bg-header);
-            border-left: 3px solid var(--primary);
-        }
-
-        .chat-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            overflow: hidden;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .chat-info {
-            flex: 1;
-        }
-
-        .chat-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .chat-status {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .center-content {
-            width: 40%;
-        }
-
-        .story-section {
-            background: var(--bg-sidebar);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-        }
-
-        .story-container {
-            display: flex;
-            gap: 20px;
-        }
-
-        .story-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .story-ring {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--warning));
-            padding: 3px;
-            margin-bottom: 8px;
-        }
-
-        .story-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--bg-sidebar);
-            padding: 3px;
-        }
-
-        .story-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .story-name {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .feed-post {
-            background: var(--bg-sidebar);
-            border-radius: 20px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .post-header {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .post-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .post-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--primary);
-        }
-
-        .post-content {
-            padding: 20px;
-        }
-
-        .post-text {
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .post-actions {
-            padding: 15px 20px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 20px;
-        }
-
-        .post-action {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-        }
-
-        .post-action:hover {
-            color: var(--primary);
-        }
-
-        .post-action.liked {
-            color: var(--danger);
-        }
-
-        .right-sidebar {
-            width: 30%;
-            background: var(--bg-sidebar);
-            border-radius: 20px;
-            height: calc(100vh - 120px);
-            position: sticky;
-            top: 100px;
-            overflow-y: auto;
-        }
-
-        .trending-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .trend-item {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-        }
-
-        .trend-item:hover {
-            background: var(--bg-header);
-        }
-
-        .suggested-users {
-            padding: 20px;
-        }
-
-        .suggested-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-
-        .follow-btn {
-            padding: 5px 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-        .chat-window {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            height: 500px;
-            background: var(--bg-header);
-            border-radius: 20px;
-            display: none;
-            flex-direction: column;
-            z-index: 1000;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        .chat-window.active {
-            display: flex;
-        }
-
-        .chat-window-header {
-            padding: 15px;
-            background: var(--primary);
-            border-radius: 20px 20px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-        }
-
-        .message {
-            margin-bottom: 10px;
-            display: flex;
-        }
-
-        .message.sent {
-            justify-content: flex-end;
-        }
-
-        .message.received {
-            justify-content: flex-start;
-        }
-
-        .message-bubble {
-            max-width: 70%;
-            padding: 10px 15px;
-            border-radius: 18px;
-            background: var(--bg-input);
-        }
-
-        .message.sent .message-bubble {
-            background: var(--sent-msg);
-        }
-
-        .chat-input-area {
-            padding: 15px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .chat-input-area input {
-            flex: 1;
-            padding: 10px;
-            background: var(--bg-input);
-            border: none;
-            border-radius: 20px;
-            color: white;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--bg-header);
-            padding: 15px 25px;
-            border-radius: 50px;
-            border-left: 4px solid var(--primary);
-            z-index: 3000;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-header h1 { font-size: 3em; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .auth-header p { color: var(--text-muted); }
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 30px; background: var(--bg-input); padding: 5px; border-radius: 50px; }
+        .auth-tab { flex: 1; padding: 12px; text-align: center; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+        .auth-tab.active { background: var(--primary); color: white; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .form-group { margin-bottom: 20px; }
+        .form-group input { width: 100%; padding: 15px; background: var(--bg-input); border: none; border-radius: 15px; color: var(--text-light); font-size: 16px; }
+        .form-group input:focus { outline: none; box-shadow: 0 0 0 2px var(--primary); }
+        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,168,132,0.4); }
+        .error-message { color: var(--danger); margin-top: 10px; text-align: center; font-size: 14px; }
+        
+        #appContainer { display: none; min-height: 100vh; }
+        .nav-bar { position: fixed; top: 0; left: 0; right: 0; background: rgba(31,44,51,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        .nav-logo { font-size: 24px; font-weight: bold; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-menu { display: flex; gap: 25px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item span { font-size: 11px; }
+        .nav-item:hover, .nav-item.active { color: var(--primary); }
+        .nav-profile { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; }
+        .nav-profile img { width: 100%; height: 100%; object-fit: cover; }
+        .main-content { margin-top: 80px; padding: 20px; display: flex; gap: 20px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        .left-sidebar { width: 30%; background: var(--bg-sidebar); border-radius: 20px; overflow: hidden; height: calc(100vh - 100px); position: sticky; top: 80px; }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .chat-search { padding: 15px; }
+        .chat-search input { width: 100%; padding: 12px 20px; background: var(--bg-input); border: none; border-radius: 30px; color: var(--text-light); }
+        .chat-list { overflow-y: auto; height: calc(100% - 130px); }
+        .chat-item { display: flex; align-items: center; padding: 15px 20px; cursor: pointer; transition: 0.3s; border-bottom: 1px solid var(--border-color); }
+        .chat-item:hover { background: var(--bg-header); }
+        .chat-avatar { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; background: var(--primary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .chat-info { flex: 1; }
+        .chat-name { font-weight: 600; margin-bottom: 5px; }
+        .online-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;transform:scale(1.2);} }
+        .center-content { width: 40%; }
+        .story-section { background: var(--bg-sidebar); border-radius: 20px; padding: 20px; margin-bottom: 20px; overflow-x: auto; }
+        .story-container { display: flex; gap: 20px; }
+        .story-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .story-ring { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(45deg, var(--primary), var(--warning)); padding: 3px; margin-bottom: 8px; }
+        .story-avatar { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-sidebar); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .story-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .story-name { font-size: 12px; color: var(--text-muted); }
+        .feed-post { background: var(--bg-sidebar); border-radius: 20px; margin-bottom: 20px; overflow: hidden; }
+        .post-header { padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .post-user { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .post-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .post-content { padding: 20px; }
+        .post-text { margin-bottom: 15px; line-height: 1.6; }
+        .post-media { max-height: 400px; overflow: hidden; border-radius: 15px; margin-bottom: 15px; }
+        .post-media img, .post-media video { width: 100%; max-height: 400px; object-fit: cover; }
+        .post-actions { padding: 15px 20px; border-top: 1px solid var(--border-color); display: flex; gap: 20px; }
+        .post-action { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .post-action:hover { color: var(--primary); }
+        .post-action.liked { color: var(--danger); }
+        .right-sidebar { width: 30%; background: var(--bg-sidebar); border-radius: 20px; height: calc(100vh - 100px); position: sticky; top: 80px; overflow-y: auto; }
+        .trending-header, .suggested-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .trend-item, .suggested-user { padding: 15px 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .trend-item:hover, .suggested-user:hover { background: var(--bg-header); }
+        .follow-btn { padding: 5px 15px; background: var(--primary); color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 12px; }
+        .follow-btn.following { background: var(--bg-input); color: var(--text-muted); }
+        
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal.active { display: flex; }
+        .modal-content { width: 90%; max-width: 500px; background: var(--bg-header); border-radius: 30px; overflow: hidden; animation: modalPop 0.3s; }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { padding: 20px; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background: var(--primary); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .story-viewer { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .story-viewer.active { display: flex; }
+        .story-progress-bar { position: absolute; top: 20px; left: 20px; right: 20px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; overflow: hidden; }
+        .story-progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.1s linear; }
+        .chat-window { position: fixed; bottom: 20px; right: 20px; width: 350px; height: 500px; background: var(--bg-header); border-radius: 20px; display: none; flex-direction: column; z-index: 1500; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .chat-window.active { display: flex; }
+        .chat-window-header { padding: 15px; background: var(--primary); border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 15px; }
+        .message { margin-bottom: 10px; display: flex; }
+        .message.sent { justify-content: flex-end; }
+        .message.received { justify-content: flex-start; }
+        .message-bubble { max-width: 70%; padding: 10px 15px; border-radius: 18px; background: var(--bg-input); }
+        .message.sent .message-bubble { background: var(--sent-msg); }
+        .chat-input-area { padding: 15px; display: flex; gap: 10px; border-top: 1px solid var(--border-color); }
+        .chat-input-area input { flex: 1; padding: 10px; background: var(--bg-input); border: none; border-radius: 20px; color: white; }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--bg-header); padding: 12px 24px; border-radius: 40px; border-left: 4px solid var(--primary); z-index: 4000; animation: slideIn 0.3s; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @media (max-width: 1024px) { .main-content { flex-direction: column; } .left-sidebar, .center-content, .right-sidebar { width: 100%; position: static; height: auto; } }
+        .comment-section { padding: 15px 20px; border-top: 1px solid var(--border-color); }
+        .comment-item { display: flex; gap: 10px; margin-bottom: 10px; }
+        .comment-input-area { display: flex; gap: 10px; margin-top: 10px; }
+        .comment-input-area input { flex: 1; padding: 10px; background: var(--bg-input); border: none; border-radius: 20px; color: white; }
+        .explore-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; }
+        .explore-item { aspect-ratio: 1; background: var(--bg-input); border-radius: 15px; overflow: hidden; cursor: pointer; }
+        .explore-item img, .explore-item video { width: 100%; height: 100%; object-fit: cover; }
+        .notification-item { padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+        .profile-page { background: var(--bg-sidebar); border-radius: 20px; padding: 30px; text-align: center; }
+        .profile-header-avatar { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; background: var(--primary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .profile-stats { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
+        .profile-stats div { text-align: center; }
+        .profile-stats .number { font-size: 24px; font-weight: bold; color: var(--primary); }
+        .profile-posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-
+    
     <div id="authContainer">
         <div class="auth-card">
             <div class="flag-selector">
@@ -697,107 +166,112 @@
                 <div class="flag-btn flag-it" data-lang="it" onclick="setLanguage('it', this)"></div>
                 <div class="flag-btn flag-tr" data-lang="tr" onclick="setLanguage('tr', this)"></div>
             </div>
-            <div class="auth-header">
-                <h1>DivineX</h1>
-                <p id="subtitleText">Connect with the world</p>
-            </div>
-            <div class="auth-tabs">
-                <div class="auth-tab active" onclick="switchAuthTab('login')" id="loginTabBtn">Login</div>
-                <div class="auth-tab" onclick="switchAuthTab('register')" id="registerTabBtn">Register</div>
-            </div>
+            <div class="auth-header"><h1>DivineX</h1><p id="subtitleText">Connect with the world</p></div>
+            <div class="auth-tabs"><div class="auth-tab active" onclick="switchAuthTab('login')" id="loginTabBtn">Login</div><div class="auth-tab" onclick="switchAuthTab('register')" id="registerTabBtn">Register</div></div>
             <div id="loginForm" class="auth-form active">
-                <div class="form-group">
-                    <input type="text" id="loginUsername" placeholder="Username">
-                </div>
-                <div class="form-group">
-                    <input type="password" id="loginPassword" placeholder="Password">
-                </div>
+                <div class="form-group"><input type="text" id="loginUsername" placeholder="Username"></div>
+                <div class="form-group"><input type="password" id="loginPassword" placeholder="Password"></div>
                 <button class="btn" onclick="login()" id="loginBtnText">Login</button>
                 <div id="loginError" class="error-message"></div>
             </div>
             <div id="registerForm" class="auth-form">
-                <div class="form-group">
-                    <input type="text" id="registerUsername" placeholder="Username">
-                </div>
-                <div class="form-group">
-                    <input type="email" id="registerEmail" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <input type="password" id="registerPassword" placeholder="Password">
-                </div>
-                <div class="form-group">
-                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password">
-                </div>
+                <div class="form-group"><input type="text" id="registerUsername" placeholder="Username"></div>
+                <div class="form-group"><input type="email" id="registerEmail" placeholder="Email"></div>
+                <div class="form-group"><input type="password" id="registerPassword" placeholder="Password"></div>
+                <div class="form-group"><input type="password" id="registerConfirmPassword" placeholder="Confirm Password"></div>
                 <button class="btn" onclick="register()" id="registerBtnText">Register</button>
                 <div id="registerError" class="error-message"></div>
             </div>
         </div>
     </div>
-
+    
     <div id="appContainer">
         <div class="nav-bar">
             <div class="nav-logo">DivineX</div>
             <div class="nav-menu">
-                <div class="nav-item active" onclick="switchTab('home')">
-                    <i class="fas fa-home"></i><span>Home</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('explore')">
-                    <i class="fas fa-compass"></i><span>Explore</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('notifications')">
-                    <i class="fas fa-bell"></i><span>Alerts</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('profile')">
-                    <i class="fas fa-user"></i><span>Profile</span>
-                </div>
+                <div class="nav-item active" onclick="switchMainTab('home')"><i class="fas fa-home"></i><span>Home</span></div>
+                <div class="nav-item" onclick="switchMainTab('explore')"><i class="fas fa-compass"></i><span>Explore</span></div>
+                <div class="nav-item" onclick="openCreatePostModal()"><i class="fas fa-plus-square"></i><span>Create</span></div>
+                <div class="nav-item" onclick="switchMainTab('notifications')"><i class="fas fa-bell"></i><span>Alerts</span></div>
+                <div class="nav-item" onclick="switchMainTab('profile')"><i class="fas fa-user"></i><span>Profile</span></div>
             </div>
-            <div class="nav-profile" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i>
-            </div>
+            <div class="nav-profile" id="navProfile" onclick="switchMainTab('profile')"><i class="fas fa-user"></i></div>
         </div>
-        <div class="main-content">
+        
+        <div class="main-content" id="mainContent">
             <div class="left-sidebar">
-                <div class="sidebar-header">
-                    <h3><i class="fas fa-comments"></i> Messages</h3>
-                </div>
-                <div class="chat-search">
-                    <input type="text" placeholder="Search chats..." id="chatSearch" onkeyup="searchChats()">
-                </div>
+                <div class="sidebar-header"><h3><i class="fas fa-comments"></i> Messages</h3></div>
+                <div class="chat-search"><input type="text" placeholder="Search chats..." id="chatSearch" onkeyup="searchChats()"></div>
                 <div class="chat-list" id="chatList"></div>
             </div>
-            <div class="center-content">
-                <div class="story-section">
-                    <div class="story-container" id="storiesContainer"></div>
-                </div>
+            <div class="center-content" id="centerContent">
+                <div class="story-section"><div class="story-container" id="storiesContainer"></div></div>
                 <div id="feedPosts"></div>
             </div>
-            <div class="right-sidebar">
-                <div class="trending-header">
-                    <h3><i class="fas fa-fire"></i> Trending</h3>
-                </div>
+            <div class="right-sidebar" id="rightSidebar">
+                <div class="trending-header"><h3><i class="fas fa-fire"></i> Trending</h3></div>
                 <div id="trendingList"></div>
-                <div class="suggested-users">
-                    <h4>Suggested for you</h4>
-                    <div id="suggestedUsers"></div>
+                <div class="suggested-header"><h4>Suggested for you</h4></div>
+                <div id="suggestedUsers"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Edit Profile</h3><i class="fas fa-times" onclick="closeProfileModal()" style="cursor:pointer"></i></div>
+            <div class="modal-body">
+                <div class="profile-avatar" id="profileAvatar" onclick="uploadProfileImage()"><i class="fas fa-camera" style="font-size: 30px;"></i></div>
+                <div class="form-group"><input type="text" id="profileUsername" placeholder="Username" disabled></div>
+                <div class="form-group"><input type="text" id="profileBio" placeholder="Bio" maxlength="150"></div>
+                <div class="form-group"><input type="text" id="profileEmail" placeholder="Email" disabled></div>
+                <button class="btn" onclick="updateProfile()">Save Changes</button>
+                <button class="btn" onclick="logout()" style="margin-top: 10px; background: var(--danger);">Logout</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Create Post</h3><i class="fas fa-times" onclick="closeCreatePostModal()" style="cursor:pointer"></i></div>
+            <div class="modal-body">
+                <textarea id="postText" placeholder="What's on your mind?" style="width:100%; padding:15px; background:var(--bg-input); border:none; border-radius:15px; color:white; min-height:100px; margin-bottom:15px;"></textarea>
+                <div id="postMediaPreview" style="margin-bottom:15px; display:none;"></div>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button class="btn" onclick="uploadPostImage()" style="flex:1"><i class="fas fa-image"></i> Photo</button>
+                    <button class="btn" onclick="uploadPostVideo()" style="flex:1"><i class="fas fa-video"></i> Video</button>
+                </div>
+                <button class="btn" onclick="createPost()">Post</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="commentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="commentModalTitle">Comments</h3><i class="fas fa-times" onclick="closeCommentModal()" style="cursor:pointer"></i></div>
+            <div class="modal-body">
+                <div id="commentsList" style="max-height: 400px; overflow-y: auto; margin-bottom: 15px;"></div>
+                <div class="comment-input-area">
+                    <input type="text" id="commentInput" placeholder="Write a comment...">
+                    <button class="btn" onclick="addComment()" style="width: auto; padding: 10px 20px;">Send</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-window-header">
-            <span id="chatUserName">User</span>
-            <i class="fas fa-times" onclick="closeChat()" style="cursor: pointer;"></i>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Type a message...">
-            <button class="btn" style="width: auto; padding: 10px 20px;" onclick="sendMessage()">Send</button>
-        </div>
+    
+    <div id="storyViewer" class="story-viewer" onclick="closeStoryViewer()">
+        <div class="story-progress-bar"><div id="storyProgressFill" class="story-progress-fill"></div></div>
+        <div id="storyContent" style="text-align:center;"></div>
     </div>
-
+    
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-window-header"><span id="chatUserName"></span><i class="fas fa-times" onclick="closeChat()" style="cursor:pointer"></i></div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area"><input type="text" id="chatInput" placeholder="Type a message..."><button class="btn" onclick="sendMessage()" style="width:auto; padding:10px 20px;">Send</button></div>
+    </div>
+    
     <div id="toastContainer"></div>
-
+    
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyC5a7AmwYgCJtan_c2BVDZVU9z7s29vwvQ",
@@ -808,22 +282,26 @@
             messagingSenderId: "62193852994",
             appId: "1:62193852994:web:e582135f2815a1aa1a43db"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const database = firebase.database();
-
+        const db = firebase.database();
+        const storage = firebase.storage();
+        
         let currentUser = null;
         let selectedChatUser = null;
         let currentLang = 'en';
-
+        let selectedPostFile = null;
+        let currentStoryInterval = null;
+        let currentPostId = null;
+        let currentExploreTab = 'explore';
+        
         const translations = {
-            en: { subtitle: "Connect with the world", login: "Login", register: "Register", loginBtn: "Login", registerBtn: "Register", username: "Username", email: "Email", password: "Password", confirm: "Confirm Password", welcome: "Welcome, " },
-            ru: { subtitle: "Связь с миром", login: "Вход", register: "Регистрация", loginBtn: "Войти", registerBtn: "Зарегистрироваться", username: "Имя пользователя", email: "Электронная почта", password: "Пароль", confirm: "Подтвердите пароль", welcome: "Добро пожаловать, " },
-            it: { subtitle: "Connettiti con il mondo", login: "Accedi", register: "Registrati", loginBtn: "Accedi", registerBtn: "Registrati", username: "Nome utente", email: "Email", password: "Password", confirm: "Conferma password", welcome: "Benvenuto, " },
-            tr: { subtitle: "Dünyayla bağlanın", login: "Giriş Yap", register: "Kayıt Ol", loginBtn: "Giriş Yap", registerBtn: "Kayıt Ol", username: "Kullanıcı Adı", email: "E-posta", password: "Şifre", confirm: "Şifreyi Onayla", welcome: "Hoş geldin, " }
+            en: { subtitle: "Connect with the world", login: "Login", register: "Register", loginBtn: "Login", registerBtn: "Register", username: "Username", email: "Email", password: "Password", confirm: "Confirm Password", welcome: "Welcome, ", bio: "Bio" },
+            ru: { subtitle: "Связь с миром", login: "Вход", register: "Регистрация", loginBtn: "Войти", registerBtn: "Зарегистрироваться", username: "Имя пользователя", email: "Электронная почта", password: "Пароль", confirm: "Подтвердите пароль", welcome: "Добро пожаловать, ", bio: "О себе" },
+            it: { subtitle: "Connettiti con il mondo", login: "Accedi", register: "Registrati", loginBtn: "Accedi", registerBtn: "Registrati", username: "Nome utente", email: "Email", password: "Password", confirm: "Conferma password", welcome: "Benvenuto, ", bio: "Biografia" },
+            tr: { subtitle: "Dünyayla bağlanın", login: "Giriş Yap", register: "Kayıt Ol", loginBtn: "Giriş Yap", registerBtn: "Kayıt Ol", username: "Kullanıcı Adı", email: "E-posta", password: "Şifre", confirm: "Şifreyi Onayla", welcome: "Hoş geldin, ", bio: "Biyografi" }
         };
-
+        
         function setLanguage(lang, element) {
             currentLang = lang;
             const t = translations[lang];
@@ -838,50 +316,51 @@
             document.getElementById('registerEmail').placeholder = t.email;
             document.getElementById('registerPassword').placeholder = t.password;
             document.getElementById('registerConfirmPassword').placeholder = t.confirm;
+            if(document.getElementById('profileBio')) document.getElementById('profileBio').placeholder = t.bio;
             document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active-flag'));
             if(element) element.classList.add('active-flag');
         }
-
-        function showToast(message, type = 'success') {
+        
+        function showToast(msg, type = 'success') {
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
             document.getElementById('toastContainer').appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
-
+        
         function hashPassword(pwd) { return CryptoJS.SHA256(pwd).toString(); }
-
+        
         async function register() {
             const username = document.getElementById('registerUsername').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
-            const password = document.getElementById('registerPassword').value;
+            const pwd = document.getElementById('registerPassword').value;
             const confirm = document.getElementById('registerConfirmPassword').value;
-            if(!username || !email || !password) { showToast('All fields required', 'error'); return; }
-            if(password !== confirm) { showToast('Passwords do not match', 'error'); return; }
-            const existing = await database.ref('usernames/' + username).once('value');
+            if(!username || !email || !pwd) { showToast('All fields required', 'error'); return; }
+            if(pwd !== confirm) { showToast('Passwords do not match', 'error'); return; }
+            const existing = await db.ref('usernames/' + username).once('value');
             if(existing.exists()) { showToast('Username taken', 'error'); return; }
-            const cred = await auth.createUserWithEmailAndPassword(email, password);
-            await database.ref('users/' + cred.user.uid).set({
-                uid: cred.user.uid, username, email, password: hashPassword(password),
-                photoURL: null, bio: 'New user', status: 'online', lastSeen: new Date().toISOString()
+            const cred = await auth.createUserWithEmailAndPassword(email, pwd);
+            await db.ref('users/' + cred.user.uid).set({
+                uid: cred.user.uid, username, email, password: hashPassword(pwd),
+                photoURL: null, bio: 'New to DivineX', followers: {}, following: {},
+                status: 'online', lastSeen: Date.now(), posts: []
             });
-            await database.ref('usernames/' + username).set(cred.user.uid);
+            await db.ref('usernames/' + username).set(cred.user.uid);
             showToast('Registration successful!', 'success');
         }
-
+        
         async function login() {
             const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            if(!username || !password) { showToast('All fields required', 'error'); return; }
-            const uid = (await database.ref('usernames/' + username).once('value')).val();
+            const pwd = document.getElementById('loginPassword').value;
+            if(!username || !pwd) { showToast('All fields required', 'error'); return; }
+            const uid = (await db.ref('usernames/' + username).once('value')).val();
             if(!uid) { showToast('User not found', 'error'); return; }
-            const userData = (await database.ref('users/' + uid).once('value')).val();
-            if(!userData) { showToast('User not found', 'error'); return; }
-            if(hashPassword(password) !== userData.password) { showToast('Invalid password', 'error'); return; }
-            await auth.signInWithEmailAndPassword(userData.email, password);
+            const userData = (await db.ref('users/' + uid).once('value')).val();
+            if(hashPassword(pwd) !== userData.password) { showToast('Invalid password', 'error'); return; }
+            await auth.signInWithEmailAndPassword(userData.email, pwd);
         }
-
+        
         function switchAuthTab(tab) {
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             if(tab === 'login') {
@@ -894,15 +373,15 @@
                 document.getElementById('loginForm').classList.remove('active');
             }
         }
-
+        
         function loadChats() {
-            database.ref('users').on('value', (snapshot) => {
-                const users = snapshot.val();
+            db.ref('users').on('value', (snap) => {
+                const users = snap.val();
                 let html = '';
                 for(let id in users) {
-                    if(id !== currentUser.uid && !users[id].banned) {
+                    if(id !== currentUser.uid) {
                         html += `<div class="chat-item" onclick="openChat('${id}', '${users[id].username}')">
-                            <div class="chat-avatar"><i class="fas fa-user"></i></div>
+                            <div class="chat-avatar">${users[id].photoURL ? `<img src="${users[id].photoURL}">` : '<i class="fas fa-user"></i>'}</div>
                             <div class="chat-info">
                                 <div class="chat-name">${users[id].username}</div>
                                 <div class="chat-status"><span class="online-dot" style="background: ${users[id].status === 'online' ? 'var(--primary)' : 'gray'}"></span>${users[id].status === 'online' ? 'Online' : 'Offline'}</div>
@@ -910,58 +389,46 @@
                         </div>`;
                     }
                 }
-                document.getElementById('chatList').innerHTML = html || '<div style="padding:20px;text-align:center">No users</div>';
+                document.getElementById('chatList').innerHTML = html || '<div style="padding:20px;text-align:center">No users found</div>';
             });
         }
-
+        
         function openChat(userId, username) {
             selectedChatUser = { id: userId, username };
             document.getElementById('chatUserName').innerText = username;
             document.getElementById('chatWindow').classList.add('active');
             loadMessages();
         }
-
+        
         function closeChat() {
             document.getElementById('chatWindow').classList.remove('active');
-            if(selectedChatUser) {
-                database.ref(`messages/${currentUser.uid}_${selectedChatUser.id}`).off();
-                selectedChatUser = null;
-            }
+            if(selectedChatUser) selectedChatUser = null;
         }
-
+        
         function loadMessages() {
             const chatId = `${currentUser.uid}_${selectedChatUser.id}`;
-            const reverseId = `${selectedChatUser.id}_${currentUser.uid}`;
-            const messagesRef = database.ref(`messages/${chatId}`).orderByChild('timestamp');
-            messagesRef.on('value', (snapshot) => {
-                const messages = snapshot.val();
+            db.ref(`messages/${chatId}`).orderByChild('timestamp').on('value', (snap) => {
+                const msgs = snap.val();
                 let html = '';
-                for(let id in messages) {
-                    const msg = messages[id];
+                for(let id in msgs) {
+                    const msg = msgs[id];
                     const isSent = msg.senderId === currentUser.uid;
-                    html += `<div class="message ${isSent ? 'sent' : 'received'}">
-                        <div class="message-bubble">${msg.text}<br><small style="font-size:10px">${moment(msg.timestamp).format('LT')}</small></div>
-                    </div>`;
+                    html += `<div class="message ${isSent ? 'sent' : 'received'}"><div class="message-bubble">${msg.text}<br><small>${moment(msg.timestamp).format('LT')}</small></div></div>`;
                 }
                 document.getElementById('chatMessages').innerHTML = html;
                 document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
             });
         }
-
+        
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if(!text || !selectedChatUser) return;
             const chatId = `${currentUser.uid}_${selectedChatUser.id}`;
-            database.ref(`messages/${chatId}`).push({
-                senderId: currentUser.uid,
-                receiverId: selectedChatUser.id,
-                text: text,
-                timestamp: Date.now()
-            });
+            db.ref(`messages/${chatId}`).push({ senderId: currentUser.uid, receiverId: selectedChatUser.id, text, timestamp: Date.now() });
             input.value = '';
         }
-
+        
         function searchChats() {
             const search = document.getElementById('chatSearch').value.toLowerCase();
             document.querySelectorAll('.chat-item').forEach(item => {
@@ -969,70 +436,431 @@
                 item.style.display = name.includes(search) ? 'flex' : 'none';
             });
         }
-
+        
         function loadStories() {
-            database.ref('users').limitToFirst(10).once('value', (snap) => {
-                let html = `<div class="story-item" onclick="showToast('Create story coming soon','warning')"><div class="story-ring"><div class="story-avatar"><i class="fas fa-plus"></i></div></div><div class="story-name">Your Story</div></div>`;
-                const users = snap.val();
-                for(let id in users) {
-                    if(id !== currentUser.uid) {
-                        html += `<div class="story-item" onclick="showToast('Story view coming','info')"><div class="story-ring"><div class="story-avatar"><i class="fas fa-user"></i></div></div><div class="story-name">${users[id].username}</div></div>`;
+            db.ref('stories').orderByChild('expiresAt').startAt(Date.now()).on('value', (snap) => {
+                const stories = snap.val();
+                let html = `<div class="story-item" onclick="openCreateStory()"><div class="story-ring"><div class="story-avatar"><i class="fas fa-plus" style="font-size:24px;"></i></div></div><div class="story-name">Your Story</div></div>`;
+                for(let id in stories) {
+                    if(stories[id].userId !== currentUser.uid) {
+                        html += `<div class="story-item" onclick="viewStory('${id}')"><div class="story-ring"><div class="story-avatar">${stories[id].userPhoto ? `<img src="${stories[id].userPhoto}">` : '<i class="fas fa-user"></i>'}</div></div><div class="story-name">${stories[id].username}</div></div>`;
                     }
                 }
                 document.getElementById('storiesContainer').innerHTML = html;
             });
         }
-
-        function loadFeed() {
-            const feedDiv = document.getElementById('feedPosts');
-            feedDiv.innerHTML = `<div class="feed-post"><div class="post-header"><div class="post-user"><div class="post-avatar"><i class="fas fa-user"></i></div><div><strong>DivineX</strong></div></div></div><div class="post-content"><div class="post-text">Welcome to DivineX! Share your moments with the world. 🔥</div></div><div class="post-actions"><div class="post-action"><i class="fas fa-heart"></i> Coming Soon</div><div class="post-action"><i class="fas fa-comment"></i> Soon!</div></div></div>`;
+        
+        function openCreateStory() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,video/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const ref = storage.ref(`stories/${currentUser.uid}_${Date.now()}`);
+                    await ref.put(file);
+                    const url = await ref.getDownloadURL();
+                    await db.ref(`stories/${Date.now()}`).set({
+                        userId: currentUser.uid,
+                        username: currentUser.username,
+                        userPhoto: currentUser.photoURL,
+                        mediaUrl: url,
+                        type: file.type.startsWith('image') ? 'image' : 'video',
+                        timestamp: Date.now(),
+                        expiresAt: Date.now() + 24 * 60 * 60 * 1000
+                    });
+                    showToast('Story added!', 'success');
+                }
+            };
+            input.click();
         }
-
+        
+        async function viewStory(storyId) {
+            const story = (await db.ref(`stories/${storyId}`).once('value')).val();
+            if(!story) return;
+            const viewer = document.getElementById('storyViewer');
+            const content = document.getElementById('storyContent');
+            const progressFill = document.getElementById('storyProgressFill');
+            viewer.classList.add('active');
+            if(story.type === 'image') {
+                content.innerHTML = `<img src="${story.mediaUrl}" style="max-width:90%; max-height:80vh; border-radius:20px;">`;
+            } else {
+                content.innerHTML = `<video src="${story.mediaUrl}" autoplay style="max-width:90%; max-height:80vh; border-radius:20px;"></video>`;
+            }
+            progressFill.style.width = '0%';
+            let startTime = Date.now();
+            currentStoryInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const percent = (elapsed / 5000) * 100;
+                progressFill.style.width = Math.min(percent, 100) + '%';
+                if(percent >= 100) closeStoryViewer();
+            }, 50);
+        }
+        
+        function closeStoryViewer() {
+            if(currentStoryInterval) clearInterval(currentStoryInterval);
+            document.getElementById('storyViewer').classList.remove('active');
+        }
+        
+        function loadFeed() {
+            db.ref('posts').orderByChild('timestamp').limitToLast(30).on('value', (snap) => {
+                const posts = snap.val();
+                let html = '';
+                for(let id in posts) {
+                    const p = posts[id];
+                    html += `<div class="feed-post" data-postid="${id}">
+                        <div class="post-header">
+                            <div class="post-user" onclick="viewUserProfile('${p.userId}')">
+                                <div class="post-avatar">${p.userPhoto ? `<img src="${p.userPhoto}">` : '<i class="fas fa-user"></i>'}</div>
+                                <div><strong>${p.username}</strong><br><small>${moment(p.timestamp).fromNow()}</small></div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-text">${p.text || ''}</div>
+                            ${p.mediaUrl ? `<div class="post-media">${p.mediaType === 'image' ? `<img src="${p.mediaUrl}">` : `<video controls src="${p.mediaUrl}"></video>`}</div>` : ''}
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action ${p.likes && p.likes[currentUser.uid] ? 'liked' : ''}" onclick="toggleLike('${id}')"><i class="fas fa-heart"></i> <span id="likeCount_${id}">${Object.keys(p.likes || {}).length}</span></div>
+                            <div class="post-action" onclick="openCommentModal('${id}', '${p.username}')"><i class="fas fa-comment"></i> <span id="commentCount_${id}">${Object.keys(p.comments || {}).length}</span></div>
+                        </div>
+                    </div>`;
+                }
+                document.getElementById('feedPosts').innerHTML = html || '<div style="text-align:center; padding:40px;">No posts yet. Create your first post!</div>';
+            });
+        }
+        
+        async function toggleLike(postId) {
+            const post = (await db.ref(`posts/${postId}`).once('value')).val();
+            const likes = post.likes || {};
+            if(likes[currentUser.uid]) {
+                delete likes[currentUser.uid];
+            } else {
+                likes[currentUser.uid] = true;
+            }
+            await db.ref(`posts/${postId}/likes`).set(likes);
+        }
+        
+        function openCommentModal(postId, username) {
+            currentPostId = postId;
+            document.getElementById('commentModalTitle').innerHTML = `Comments on ${username}'s post`;
+            loadComments(postId);
+            document.getElementById('commentModal').classList.add('active');
+        }
+        
+        function closeCommentModal() {
+            document.getElementById('commentModal').classList.remove('active');
+            currentPostId = null;
+        }
+        
+        function loadComments(postId) {
+            db.ref(`posts/${postId}/comments`).on('value', (snap) => {
+                const comments = snap.val();
+                let html = '';
+                for(let id in comments) {
+                    const c = comments[id];
+                    html += `<div class="comment-item">
+                        <div><strong>${c.username}</strong></div>
+                        <div>${c.text}</div>
+                        <small>${moment(c.timestamp).fromNow()}</small>
+                    </div>`;
+                }
+                document.getElementById('commentsList').innerHTML = html || '<div style="text-align:center;">No comments yet</div>';
+            });
+        }
+        
+        async function addComment() {
+            const text = document.getElementById('commentInput').value.trim();
+            if(!text || !currentPostId) return;
+            await db.ref(`posts/${currentPostId}/comments`).push({
+                userId: currentUser.uid,
+                username: currentUser.username,
+                text: text,
+                timestamp: Date.now()
+            });
+            document.getElementById('commentInput').value = '';
+            showToast('Comment added!', 'success');
+        }
+        
+        function openCreatePostModal() {
+            document.getElementById('createPostModal').classList.add('active');
+        }
+        
+        function closeCreatePostModal() {
+            document.getElementById('createPostModal').classList.remove('active');
+            document.getElementById('postText').value = '';
+            document.getElementById('postMediaPreview').style.display = 'none';
+            selectedPostFile = null;
+        }
+        
+        function uploadPostImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                selectedPostFile = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('postMediaPreview');
+                    preview.innerHTML = `<img src="${e.target.result}" style="max-width:100%; border-radius:15px;">`;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(selectedPostFile);
+            };
+            input.click();
+        }
+        
+        function uploadPostVideo() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = (e) => {
+                selectedPostFile = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('postMediaPreview');
+                    preview.innerHTML = `<video controls src="${e.target.result}" style="max-width:100%; border-radius:15px;"></video>`;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(selectedPostFile);
+            };
+            input.click();
+        }
+        
+        async function createPost() {
+            const text = document.getElementById('postText').value.trim();
+            if(!text && !selectedPostFile) { showToast('Please enter text or select media', 'error'); return; }
+            let mediaUrl = null, mediaType = null;
+            if(selectedPostFile) {
+                const ref = storage.ref(`posts/${currentUser.uid}_${Date.now()}`);
+                await ref.put(selectedPostFile);
+                mediaUrl = await ref.getDownloadURL();
+                mediaType = selectedPostFile.type.startsWith('image') ? 'image' : 'video';
+            }
+            await db.ref('posts').push({
+                userId: currentUser.uid,
+                username: currentUser.username,
+                userPhoto: currentUser.photoURL,
+                text: text,
+                mediaUrl: mediaUrl,
+                mediaType: mediaType,
+                timestamp: Date.now(),
+                likes: {},
+                comments: {}
+            });
+            closeCreatePostModal();
+            showToast('Post created!', 'success');
+        }
+        
         function loadTrending() {
-            const trends = ['#DivineX', '#NewWorld', '#Social', '#Connect'];
+            const trends = ['#DivineX', '#Social', '#Community', '#Connect', '#NewWorld'];
             let html = '';
             trends.forEach(t => {
-                html += `<div class="trend-item" onclick="showToast('Searching ${t}','info')"><div class="trend-name">${t}</div><div class="trend-stats">Trending</div></div>`;
+                html += `<div class="trend-item" onclick="searchTrend('${t}')"><div class="trend-name">${t}</div><div class="trend-stats">Trending</div></div>`;
             });
             document.getElementById('trendingList').innerHTML = html;
         }
-
+        
+        function searchTrend(trend) {
+            showToast(`Searching for ${trend}`, 'info');
+        }
+        
         function loadSuggestedUsers() {
-            database.ref('users').limitToFirst(5).once('value', (snap) => {
-                let html = '';
+            db.ref('users').once('value', (snap) => {
                 const users = snap.val();
+                let html = '';
                 for(let id in users) {
-                    if(id !== currentUser.uid) {
-                        html += `<div class="suggested-user"><div class="suggested-avatar"><i class="fas fa-user"></i></div><div class="suggested-info"><div class="suggested-name">${users[id].username}</div></div><button class="follow-btn" onclick="showToast('Followed!','success')">Follow</button></div>`;
+                    if(id !== currentUser.uid && (!currentUser.following || !currentUser.following[id])) {
+                        html += `<div class="suggested-user">
+                            <div class="suggested-avatar">${users[id].photoURL ? `<img src="${users[id].photoURL}" style="width:40px;height:40px;border-radius:50%;">` : '<i class="fas fa-user"></i>'}</div>
+                            <div><strong>${users[id].username}</strong><br><small>${users[id].bio || 'New user'}</small></div>
+                            <button class="follow-btn" onclick="followUser('${id}', this)">Follow</button>
+                        </div>`;
                     }
                 }
-                document.getElementById('suggestedUsers').innerHTML = html;
+                document.getElementById('suggestedUsers').innerHTML = html || '<div style="padding:20px">No suggestions</div>';
             });
         }
-
-        function switchTab(tab) {
+        
+        async function followUser(userId, btn) {
+            const following = currentUser.following || {};
+            if(following[userId]) {
+                delete following[userId];
+                btn.textContent = 'Follow';
+                btn.classList.remove('following');
+                showToast('Unfollowed');
+            } else {
+                following[userId] = true;
+                btn.textContent = 'Following';
+                btn.classList.add('following');
+                showToast('Followed');
+            }
+            await db.ref(`users/${currentUser.uid}/following`).set(following);
+            currentUser.following = following;
+        }
+        
+        function loadExplore() {
+            db.ref('posts').orderByChild('timestamp').limitToLast(50).once('value', (snap) => {
+                const posts = snap.val();
+                let html = '<div class="explore-grid">';
+                for(let id in posts) {
+                    const p = posts[id];
+                    if(p.mediaUrl) {
+                        html += `<div class="explore-item" onclick="viewPostDetail('${id}')">
+                            ${p.mediaType === 'image' ? `<img src="${p.mediaUrl}">` : `<video src="${p.mediaUrl}"></video>`}
+                        </div>`;
+                    }
+                }
+                html += '</div>';
+                document.getElementById('centerContent').innerHTML = html;
+            });
+        }
+        
+        function loadNotifications() {
+            db.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(30).on('value', (snap) => {
+                const notifs = snap.val();
+                let html = '';
+                for(let id in notifs) {
+                    const n = notifs[id];
+                    html += `<div class="notification-item">
+                        <i class="fas ${n.type === 'like' ? 'fa-heart' : 'fa-comment'}"></i>
+                        <div>${n.message}<br><small>${moment(n.timestamp).fromNow()}</small></div>
+                    </div>`;
+                }
+                document.getElementById('centerContent').innerHTML = html || '<div style="padding:40px;text-align:center">No notifications</div>';
+            });
+        }
+        
+        function loadProfile() {
+            db.ref(`users/${currentUser.uid}`).on('value', async (snap) => {
+                const user = snap.val();
+                const postsSnap = await db.ref('posts').orderByChild('userId').equalTo(currentUser.uid).once('value');
+                const userPosts = postsSnap.val();
+                let postsHtml = '';
+                for(let id in userPosts) {
+                    const p = userPosts[id];
+                    if(p.mediaUrl) {
+                        postsHtml += `<div class="explore-item" onclick="viewPostDetail('${id}')">
+                            ${p.mediaType === 'image' ? `<img src="${p.mediaUrl}">` : `<video src="${p.mediaUrl}"></video>`}
+                        </div>`;
+                    }
+                }
+                const followerCount = Object.keys(user.followers || {}).length;
+                const followingCount = Object.keys(user.following || {}).length;
+                const postCount = Object.keys(userPosts || {}).length;
+                
+                const html = `<div class="profile-page">
+                    <div class="profile-header-avatar">${user.photoURL ? `<img src="${user.photoURL}">` : '<i class="fas fa-user fa-4x"></i>'}</div>
+                    <h2>${user.username}</h2>
+                    <p>${user.bio || 'No bio yet'}</p>
+                    <div class="profile-stats">
+                        <div><div class="number">${postCount}</div><div>Posts</div></div>
+                        <div><div class="number">${followerCount}</div><div>Followers</div></div>
+                        <div><div class="number">${followingCount}</div><div>Following</div></div>
+                    </div>
+                    <button class="btn" onclick="openProfileModal()">Edit Profile</button>
+                    <div class="profile-posts">${postsHtml || '<div style="grid-column:span 3; text-align:center;">No posts yet</div>'}</div>
+                </div>`;
+                document.getElementById('centerContent').innerHTML = html;
+            });
+        }
+        
+        function openProfileModal() {
+            document.getElementById('profileUsername').value = currentUser.username;
+            document.getElementById('profileEmail').value = currentUser.email;
+            document.getElementById('profileBio').value = currentUser.bio || '';
+            const avatarDiv = document.getElementById('profileAvatar');
+            if(currentUser.photoURL) avatarDiv.innerHTML = `<img src="${currentUser.photoURL}">`;
+            else avatarDiv.innerHTML = '<i class="fas fa-camera" style="font-size:30px;"></i>';
+            document.getElementById('profileModal').classList.add('active');
+        }
+        
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+        
+        function uploadProfileImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const ref = storage.ref(`profile/${currentUser.uid}`);
+                    await ref.put(file);
+                    const url = await ref.getDownloadURL();
+                    await db.ref(`users/${currentUser.uid}/photoURL`).set(url);
+                    currentUser.photoURL = url;
+                    document.getElementById('profileAvatar').innerHTML = `<img src="${url}">`;
+                    document.getElementById('navProfile').innerHTML = `<img src="${url}">`;
+                    showToast('Profile picture updated!', 'success');
+                }
+            };
+            input.click();
+        }
+        
+        async function updateProfile() {
+            const bio = document.getElementById('profileBio').value;
+            await db.ref(`users/${currentUser.uid}/bio`).set(bio);
+            currentUser.bio = bio;
+            showToast('Profile updated!', 'success');
+            closeProfileModal();
+            if(currentExploreTab === 'profile') loadProfile();
+        }
+        
+        function viewUserProfile(userId) {
+            if(userId === currentUser.uid) {
+                switchMainTab('profile');
+            } else {
+                showToast('Viewing other profiles coming soon', 'info');
+            }
+        }
+        
+        function viewPostDetail(postId) {
+            showToast('Post detail view', 'info');
+        }
+        
+        function switchMainTab(tab) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            if(tab === 'home') loadFeed();
-            else if(tab === 'explore') showToast('Explore coming soon', 'warning');
-            else if(tab === 'notifications') showToast('Notifications coming soon', 'warning');
-            else if(tab === 'profile') showToast('Profile coming soon', 'warning');
+            currentExploreTab = tab;
+            const centerContent = document.getElementById('centerContent');
+            const rightSidebar = document.getElementById('rightSidebar');
+            
+            if(tab === 'home') {
+                centerContent.innerHTML = `<div class="story-section"><div class="story-container" id="storiesContainer"></div></div><div id="feedPosts"></div>`;
+                rightSidebar.style.display = 'block';
+                loadStories();
+                loadFeed();
+            } else if(tab === 'explore') {
+                centerContent.innerHTML = '<div id="exploreContent"></div>';
+                rightSidebar.style.display = 'block';
+                loadExplore();
+            } else if(tab === 'notifications') {
+                centerContent.innerHTML = '<div id="notificationsContent"></div>';
+                rightSidebar.style.display = 'block';
+                loadNotifications();
+            } else if(tab === 'profile') {
+                centerContent.innerHTML = '<div id="profileContent"></div>';
+                rightSidebar.style.display = 'block';
+                loadProfile();
+            }
         }
-
+        
         async function logout() {
-            if(currentUser) await database.ref('users/' + currentUser.uid).update({ status: 'offline', lastSeen: new Date().toISOString() });
+            if(currentUser) await db.ref(`users/${currentUser.uid}/status`).set('offline');
             auth.signOut();
             showToast('Logged out', 'success');
         }
-
+        
         auth.onAuthStateChanged(async (user) => {
             if(user) {
-                const snap = await database.ref('users/' + user.uid).once('value');
+                const snap = await db.ref('users/' + user.uid).once('value');
                 currentUser = snap.val();
                 if(currentUser) {
                     document.getElementById('authContainer').style.display = 'none';
                     document.getElementById('appContainer').style.display = 'block';
-                    await database.ref('users/' + user.uid).update({ status: 'online', lastSeen: new Date().toISOString() });
+                    await db.ref(`users/${user.uid}`).update({ status: 'online', lastSeen: Date.now() });
+                    if(currentUser.photoURL) document.getElementById('navProfile').innerHTML = `<img src="${currentUser.photoURL}">`;
                     showToast(translations[currentLang].welcome + currentUser.username, 'success');
                     loadChats();
                     loadStories();
@@ -1046,11 +874,11 @@
                 currentUser = null;
             }
         });
-
+        
         particlesJS('particles-js', {
-            particles: { number: { value: 80 }, color: { value: '#00a884' }, shape: { type: 'circle' }, opacity: { value: 0.3 }, size: { value: 3 }, move: { enable: true, speed: 2 } }
+            particles: { number: { value: 70 }, color: { value: '#00a884' }, shape: { type: 'circle' }, opacity: { value: 0.3 }, size: { value: 3 }, move: { enable: true, speed: 2 } }
         });
-
+        
         setLanguage('en', document.querySelector('.flag-us'));
     </script>
 </body>
